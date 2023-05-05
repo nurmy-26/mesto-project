@@ -1,0 +1,19 @@
+.btn_el_close {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 32px;
+  height: 32px;
+
+  background: url('../../../images/icon_close.png') no-repeat center/contain;
+}
+
+@media (max-width: 631.98px) {
+  .btn_el_close {
+    top: -36px;
+    right: 0;
+    width: 20px;
+    height: 20px;
+  }
+}
+

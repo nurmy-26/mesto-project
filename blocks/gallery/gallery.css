@@ -1,0 +1,25 @@
+.gallery {
+  margin: 0 auto;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 17px;
+  padding-bottom: 67px;
+}
+
+@media (max-width: 1024px) {
+  .gallery {
+    max-width: 92%;
+    justify-content: center;
+    justify-content: space-evenly;
+
+    padding-bottom: 48px;
+  }
+}
+
+@media (max-width: 320px) {
+  .gallery {
+    width: 100%;
+    column-gap: 19px;
+  }
+}

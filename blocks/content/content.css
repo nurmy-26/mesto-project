@@ -1,0 +1,9 @@
+.content {
+  min-width: 320px;
+  max-width: 880px;
+
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}

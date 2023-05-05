@@ -1,0 +1,22 @@
+.btn_el_add {
+  width: 150px;
+  height: 50px;
+  border: 2px solid #fff;
+
+  background: url('../../../images/icon_add.png') no-repeat center/22px;
+}
+
+@media (max-width: 800px) {
+  .btn_el_add {
+    align-self: flex-end;
+    margin-right: 30px;
+  }
+}
+
+@media (max-width: 700px) {
+  .btn_el_add {
+    width: 282px;
+    align-self: center;
+    margin-right: 0;
+  }
+}

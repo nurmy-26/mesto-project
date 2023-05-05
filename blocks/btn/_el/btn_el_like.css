@@ -1,0 +1,6 @@
+.btn_el_like {
+  min-width: 22px; /* иначе сжимается текстом*/
+  height: 20px;
+
+  background: url('../../../images/icon_like.png') no-repeat center/contain;
+}

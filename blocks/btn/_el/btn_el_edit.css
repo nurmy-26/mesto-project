@@ -1,0 +1,15 @@
+.btn_el_edit {
+  min-width: 24px; /* иначе сжимается текстом*/
+  height: 24px;
+  border: 1px solid #fff;
+
+  background: url('../../../images/icon_edit.png') no-repeat center/10px;
+}
+
+@media (max-width: 500px) {
+  .btn_el_edit {
+    min-width: 18px;
+    height: 18px;
+    background-size: 7.5px;
+  }
+}

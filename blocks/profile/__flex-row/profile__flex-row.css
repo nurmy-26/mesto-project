@@ -1,0 +1,12 @@
+.profile__flex-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 18px;
+}
+
+@media (max-width: 700px) {
+  .profile__flex-row {
+    justify-content: center;
+  }
+}
