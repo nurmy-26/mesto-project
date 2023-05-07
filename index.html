@@ -15,89 +15,84 @@
 
                                           <!-- БЛОК HEADER -->
       <header class="header">
-        <img class="logo" src="./images/logo.png" alt="логотип сайта">
+        <img class="logo" src="./images/logo.svg" alt="логотип сайта">
       </header>
 
                                           <!-- БЛОК MAIN -->
       <main>
 
                                           <!-- Блок profile -->
-        <section class="profile padding">
+        <section class="profile content__section">
 
           <img class="profile__avatar" src="./images/default-avatar.jpg" alt="аватар профиля">
 
           <div class="profile__flex-container">
 
             <div class="profile__info">
-              <div class="profile__flex-row">
-                <h1 class="profile__name">Жак-Ив Кусто</h1>
-                <button class="btn btn_el_edit"></button>
-              </div>
+              <h1 class="profile__name">Жак-Ив Кусто</h1>
+              <button class="btn btn_el_edit" type="button"></button>
 
-              <div class="profile__flex-row">
-                <p class="profile__description">Исследователь океана</p>
-              </div>
-
+              <p class="profile__description">Исследователь океана</p>
             </div>
 
-            <button class="btn btn_el_add"></button>
+            <button class="btn btn_el_add" type="button"></button>
           </div>
 
         </section>
                                             <!-- Блок gallery -->
-        <section class="gallery padding">
+        <section class="gallery content__section">
 
           <div class="card">
-            <img class="card__image" src="./images/img-church.jpg" alt="фотография">
+            <img class="card__image" src="./images/img-church.jpg" alt="сентинский храм">
 
             <div class="card__info">
               <h2 class="card__title">Карачаевск</h2>
-              <button class="btn btn_el_like"></button>
+              <button class="btn btn_el_like" type="button"></button>
             </div>
           </div>
 
           <div class="card">
-            <img class="card__image" src="./images/img-mountains.jpg" alt="фотография">
+            <img class="card__image" src="./images/img-mountains.jpg" alt="вид на горы из домбая">
 
             <div class="card__info">
               <h2 class="card__title">Домбай</h2>
-              <button class="btn btn_el_like"></button>
+              <button class="btn btn_el_like" type="button"></button>
             </div>
           </div>
 
           <div class="card">
-            <img class="card__image" src="./images/custom-images/christian-grab-AygJgCM_vto-unsplash_small.jpg" alt="фотография">
+            <img class="card__image" src="./images/custom-images/christian-grab-AygJgCM_vto-unsplash_small.jpg" alt="присыпанный снегом еловый лес в тумане">
 
             <div class="card__info">
               <h2 class="card__title">Зимний лес</h2>
-              <button class="btn btn_el_like"></button>
+              <button class="btn btn_el_like" type="button"></button>
             </div>
           </div>
 
           <div class="card">
-            <img class="card__image" src="./images/custom-images/cristina-gottardi-9TaYFMMapbA-unsplash.jpg" alt="фотография">
+            <img class="card__image" src="./images/custom-images/cristina-gottardi-9TaYFMMapbA-unsplash.jpg" alt="морозное утро в горах">
 
             <div class="card__info">
               <h2 class="card__title">Снег в горах</h2>
-              <button class="btn btn_el_like"></button>
+              <button class="btn btn_el_like" type="button"></button>
             </div>
           </div>
 
           <div class="card">
-            <img class="card__image" src="./images/custom-images/federico-bottos-Z3NceSeZqgI-unsplash.jpg" alt="фотография">
+            <img class="card__image" src="./images/custom-images/federico-bottos-Z3NceSeZqgI-unsplash.jpg" alt="хвойный лес ранней осенью">
 
             <div class="card__info">
               <h2 class="card__title">Еще лес</h2>
-              <button class="btn btn_el_like"></button>
+              <button class="btn btn_el_like" type="button"></button>
             </div>
           </div>
 
           <div class="card">
-            <img class="card__image" src="./images/custom-images/eberhard-grossgasteiger-5P91SF0zNsI-unsplash.jpg" alt="фотография">
+            <img class="card__image" src="./images/custom-images/eberhard-grossgasteiger-5P91SF0zNsI-unsplash.jpg" alt="вид на осенний лес и горную гряду">
 
             <div class="card__info">
               <h2 class="card__title">И снова лес</h2>
-              <button class="btn btn_el_like"></button>
+              <button class="btn btn_el_like" type="button"></button>
             </div>
           </div>
 
@@ -106,32 +101,35 @@
       </main>
 
                                           <!-- БЛОК FOOTER -->
-      <footer class="footer padding">
+      <footer class="footer content__section">
         <p class="footer__copyright">© 2020 Mesto Russia</p>
       </footer>
 
     </div>
 
-    <div class="popup">                                <!-- popup_opened полупрозрачный оверлей -->
+    <div class="popup">                   <!-- popup_opened полупрозрачный оверлей -->
 
-      <form class="popup__container" action="" method="post">                       <!-- начало формы -->
+      <div class="popup__container">        <!-- обертка для кнопки и формы -->
+        <button class="btn btn_el_close" type="button"></button>  <!-- закрыть окно -->
 
-        <h2 class="popup__heading">Редактировать профиль</h2>           <!-- заголовок формы -->
+        <form name="profile-redact-form">                         <!-- начало формы -->
 
-        <fieldset class="popup__fieldset popup__fieldset_type_name">         <!-- поле с именем профиля -->
-          <input class="popup__input" type="text" name="profile-name" value="Жак-Ив Кусто" placeholder="Введите своё имя">
-        </fieldset>
+    <!-- заголовок формы -->
+          <h2 class="popup__heading">Редактировать профиль</h2>
 
-        <fieldset class="popup__fieldset popup__fieldset_type_description">  <!-- поле с подписью профиля -->
-          <input class="popup__input" type="text" name="profile-description" value="Исследователь океана" placeholder="Добавьте подпись">
-        </fieldset>
+    <!-- поле с именем профиля -->
+            <input class="popup__input popup__input_type_name" type="text" name="profile-name"
+              value="Жак-Ив Кусто" placeholder="Введите своё имя">
 
-        <fieldset class="popup__fieldset popup__fieldset_type_save">         <!-- поле сохранения -->
-          <button class="btn btn_el_save" type="submit">Сохранить</button>
-        </fieldset>
+    <!-- поле с подписью профиля -->
+            <input class="popup__input popup__input_type_description" type="text" name="profile-description"
+              value="Исследователь океана" placeholder="Добавьте подпись">
 
-        <button class="btn btn_el_close"></button>                    <!-- закрыть окно -->
-      </form>
+    <!-- поле сохранения -->
+            <button class="btn btn_el_save" type="submit">Сохранить</button>
+
+        </form>
+      </div>
     </div>
   </body>
 </html>

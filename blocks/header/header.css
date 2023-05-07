@@ -1,8 +1,10 @@
 .header {
+  box-sizing: border-box;
   display: flex;
   justify-content: start;
-  /* min-height: 74px; */
+  min-height: 120px;
   padding-top: 45px;
+  padding-bottom: 41px;
   border-bottom: 1px solid rgba(84, 84, 84, .7);
 }
 
@@ -15,6 +17,8 @@
 
 @media (max-width: 700px) {
   .header {
+    min-height: 85px;
+    padding-bottom: 31px;
     padding-top: 28px;
   }
 }

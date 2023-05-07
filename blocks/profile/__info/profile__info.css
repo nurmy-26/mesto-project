@@ -1,25 +1,29 @@
 .profile__info {
   max-width: calc(100% - 200px);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: grid;
+  align-items: baseline;
+  grid-template-areas:
+    "name edit"
+    "description description";
+  gap: 10px 18px;
 }
 
 @media (max-width: 800px) {
   .profile__info {
     max-width: calc(100% - 60px);
-    margin-bottom: 36px;
   }
 }
 
 @media (max-width: 700px) {
   .profile__info {
     max-width: 100%;
+    text-align: center;
   }
 }
 
 @media (max-width: 500px) {
   .profile__info {
     max-width: 282px;
+    row-gap: 7px;
   }
 }

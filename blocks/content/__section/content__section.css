@@ -1,10 +1,10 @@
-.padding {
+.content__section {
   padding-left: 0;
   padding-right: 0;
 }
 
 @media (max-width: 1024px) {
-  .padding {
+  .content__section {
     padding-left: 19px;
     padding-right: 19px;
   }

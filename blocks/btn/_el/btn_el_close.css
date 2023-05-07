@@ -5,7 +5,7 @@
   width: 32px;
   height: 32px;
 
-  background: url('../../../images/icon_close.png') no-repeat center/contain;
+  background: url('../../../images/icon_close.svg') no-repeat center/contain;
 }
 
 @media (max-width: 631.98px) {

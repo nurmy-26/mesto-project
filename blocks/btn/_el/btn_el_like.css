@@ -2,5 +2,9 @@
   min-width: 22px; /* иначе сжимается текстом*/
   height: 20px;
 
-  background: url('../../../images/icon_like.png') no-repeat center/contain;
+  background: url('../../../images/icon_like.svg') no-repeat center/contain;
+}
+
+.btn_el_like:hover {
+  opacity: .5;
 }

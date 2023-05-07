@@ -1,16 +1,9 @@
 .card {
   display: flex;
   flex-direction: column;
-  width: 282px;
-  height: 361px;
+  max-width: 282px;
+  min-height: 361px;
 
   border-radius: 10px;
   overflow: hidden;
-}
-
-@media (max-width: 320px) {
-  .card {
-    max-width: 600px;
-    max-height: 679px;
-  }
 }

@@ -3,7 +3,7 @@
   height: 50px;
   border: 2px solid #fff;
 
-  background: url('../../../images/icon_add.png') no-repeat center/22px;
+  background: url('../../../images/icon_add.svg') no-repeat center/22px;
 }
 
 @media (max-width: 800px) {
@@ -18,5 +18,7 @@
     width: 282px;
     align-self: center;
     margin-right: 0;
+
+    background-size: 16px;
   }
 }

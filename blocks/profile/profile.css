@@ -15,6 +15,7 @@
 
 @media (max-width: 500px) {
   .profile {
+    gap: 28px;
     padding-bottom: 36px;
   }
 }

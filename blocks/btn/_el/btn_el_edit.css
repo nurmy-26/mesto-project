@@ -1,9 +1,10 @@
 .btn_el_edit {
+  grid-area: edit;
   min-width: 24px; /* иначе сжимается текстом*/
   height: 24px;
   border: 1px solid #fff;
 
-  background: url('../../../images/icon_edit.png') no-repeat center/10px;
+  background: url('../../../images/icon_edit.svg') no-repeat center/10px;
 }
 
 @media (max-width: 500px) {
