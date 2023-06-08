@@ -1,60 +1,48 @@
-let editBtn = document.querySelector('.btn_el_edit');
-let addBtn = document.querySelector('.btn_el_add'); // пока не понадобилась
-let likeBtn = document.querySelectorAll('.btn_el_like'); // выбор только первой кнопки!!
-let closeBtn = document.querySelector('.btn_el_close');
-let popup = document.querySelector('.popup');
+const editBtn = document.querySelector('.btn_el_edit');
+const addBtn = document.querySelector('.btn_el_add'); // пока не понадобилась
+const likeBtn = document.querySelectorAll('.btn_el_like');
+const closeBtn = document.querySelector('.btn_el_close');
+const saveBtn = document.querySelector('.btn_el_save');
+const popup = document.querySelector('.popup');
 
-let profileName = document.querySelector('.profile__name');
-let profileDetail = document.querySelector('.profile__description');
+const profileName = document.querySelector('.profile__name');
+const profileDetail = document.querySelector('.profile__description');
 
-let inputName = document.querySelector('.popup__input_type_name');
-let inputDetail = document.querySelector('.popup__input_type_description');
+const editForm = document.querySelector('.popup__edit-form'); // находим форму в DOM
+const inputName = document.querySelector('.popup__input_type_name');
+const inputDetail = document.querySelector('.popup__input_type_description');
 
+// клик на РЕДАКТИРОВАТЬ:
 function editProfile() {
-  popup.classList.add('popup_opened');
-  inputName.value = profileName.textContent;
-  inputDetail.value = profileDetail.textContent;
-  // убрать строго заполненное value из input
-  // реализовать плавность
+  popup.classList.add('popup_opened'); // открываем попап
+  inputName.value = profileName.textContent; // при открытии заполняем значение поля указанным на странице
+  inputDetail.value = profileDetail.textContent; // при открытии заполняем значение поля указанным на странице
 }
 
-// работает только на первую кнопку (исправить)
-// function like() {
-//   likeBtn.classList.toggle('js-active');
-// }
-
+// клик на ЗАКРЫТЬ:
 function closePopup() {
-  popup.classList.remove('popup_opened');
-  // реализовать плавность
-  // при закрытии данные не должны сохраняться (и так не будут?)
+  popup.classList.remove('popup_opened'); // закрываем попап
+}
+
+// клик на СОХРАНИТЬ:
+function confirmChanges(evt) {
+    evt.preventDefault(); // отмена стандартной отправки формы
+
+    profileName.textContent = inputName.value; // меняем имя на введенное
+    profileDetail.textContent = inputDetail.value; // меняем подпись на введенную
+
+    popup.classList.remove('popup_opened'); // закрываем попап
 }
 
 
-editBtn.addEventListener('click', editProfile);
 
-// likeBtn.forEach(
-//   el => el.addEventListener("click", function(e) {
-//     this.classList.add("js-active");
-//   })
-// );
-
-// likeBtn.forEach(function(el) {
-//   if (likeBtn.classList.contains('js-active') === true) {
-//     return el.addEventListener('click', function(e) {
-//       this.classList.remove('js-active');
-//     })
-//   } else {
-//     return el.addEventListener('click', function(e) {
-//       this.classList.add('js-active');
-//     })
-//   }
-// });
+editBtn.addEventListener('click', editProfile); // добавляем слушатель на кнопку редактирования профиля
+closeBtn.addEventListener('click', closePopup); // добавляем слушатель на кнопку закрытия попапа
+editForm.addEventListener('submit', confirmChanges); // добавляем слушатель на кнопку "сохранить"
 
 
-likeBtn.forEach(function(el) {
-  return el.addEventListener('click', function(e) {
-    this.classList.toggle('js-active');
+likeBtn.forEach(function(item) {
+  return item.addEventListener('click', function() { // навешиваем на каждую кнопку коллекции слушатель клика
+    item.classList.toggle('js-active'); // при клике сердечко меняет свой вид
   })
 });
-
-closeBtn.addEventListener('click', closePopup);
