@@ -13,6 +13,9 @@
 @import url(../blocks/popup/__input/popup__input.css);
   @import url(../blocks/popup/__input/_type/popup__input_type_name.css);
   @import url(../blocks/popup/__input/_type/popup__input_type_description.css);
+@import url(../blocks/popup/__wrapper/popup__wrapper.css);
+@import url(../blocks/popup/__image/popup__image.css);
+@import url(../blocks/popup/__description/popup__description.css);
 
 @import url(../blocks/btn/btn.css);
   @import url(../blocks/btn/_el/btn_el_edit.css);

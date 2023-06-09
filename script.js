@@ -1,8 +1,6 @@
 const editBtn = document.querySelector('.btn_el_edit');
 const addBtn = document.querySelector('.btn_el_add');
-const likeBtn = document.querySelectorAll('.btn_el_like');
 const closeBtn = document.querySelectorAll('.btn_el_close');
-const saveBtn = document.querySelector('.btn_el_save');
 const editPopup = document.querySelector('.popup_type_profile-info'); // попап редактирования профиля
 const addPopup = document.querySelector('.popup_type_new-card'); // попап добавления новой карточки
 
@@ -18,6 +16,7 @@ const inputCardName = addForm.querySelector('.popup__input_type_name');
 const inputLink = addForm.querySelector('.popup__input_type_description');
 
 const cardTemplate = document.querySelector('#card').content; // выбрали шаблон с id card и сохранили его содержимое
+const imageTemplate = document.querySelector('#image').content;
 const gallery = document.querySelector('.gallery');
 
 // массив начальных карточек
@@ -48,6 +47,24 @@ const initialCards = [
   }
 ];
 
+//функция разворачивания картинки
+function openImage(name, link) {
+  const imageCopy = imageTemplate.querySelector('.popup').cloneNode(true); // клонируем содержимое шаблона
+  // далее заполняем шаблон
+  imageCopy.querySelector('.popup__image').alt = name;
+  imageCopy.querySelector('.popup__image').src = link;
+  imageCopy.querySelector('.popup__description').textContent = name;
+
+  // навешиваем возможность закрывая, удалять
+  imageCopy.querySelector('.btn_el_close').addEventListener('click', function(evt) {
+  const cardItem = evt.target.closest('.popup');
+  cardItem.remove();
+});
+
+  gallery.after(imageCopy); // добавляет код шаблона после gallery
+}
+
+// ОТКРЫЛИ СТРАНИЦУ
 // добавляем на страницу "стартовые" карточки
 function addInitialCards(name, link) {
   const cardCopy = cardTemplate.querySelector('.card').cloneNode(true); // клонируем содержимое шаблона
@@ -66,6 +83,11 @@ function addInitialCards(name, link) {
     const cardItem = evt.target.closest('.card');
     cardItem.remove();
   });
+
+// навешиваем возможность разворачивать картинку на каждую картинку
+ cardCopy.querySelector('.card__image').addEventListener('click', function() {
+  openImage(name, link); // используем функцию
+});
 
   gallery.prepend(cardCopy); // добавляем заполненный шаблон в DOM (в начало gallery)
 }
@@ -130,6 +152,11 @@ function createCard(evt) {
  newCard.querySelector('.btn_el_delete').addEventListener('click', function(evt) {
   const cardItem = evt.target.closest('.card');
   cardItem.remove();
+});
+
+// навешиваем возможность разворачивать картинку на каждую картинку
+newCard.querySelector('.card__image').addEventListener('click', function() {
+  openImage(inputCardName.value, inputLink.value); // используем функцию
 });
 
   gallery.prepend(newCard); // добавляем заполненный шаблон в DOM (в начало gallery)
