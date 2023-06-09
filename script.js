@@ -10,8 +10,12 @@ const profileName = document.querySelector('.profile__name');
 const profileDetail = document.querySelector('.profile__description');
 
 const editForm = document.querySelector('.popup__edit-form'); // находим форму в DOM
-const inputName = document.querySelector('.popup__input_type_name');
-const inputDetail = document.querySelector('.popup__input_type_description');
+const inputName = editForm.querySelector('.popup__input_type_name');
+const inputDetail = editForm.querySelector('.popup__input_type_description');
+
+const addForm = document.querySelector('.popup__add-form'); // находим форму в DOM
+const inputCardName = addForm.querySelector('.popup__input_type_name');
+const inputLink = addForm.querySelector('.popup__input_type_description');
 
 const cardTemplate = document.querySelector('#card').content; // выбрали шаблон с id card и сохранили его содержимое
 const gallery = document.querySelector('.gallery');
@@ -57,7 +61,13 @@ function addInitialCards(name, link) {
     evt.target.classList.toggle('js-active');
   });
 
-  gallery.prepend(cardCopy); // добавляем заполненный шаблон в DOM (в конец gallery)
+ // навешиваем возможность удалять
+ cardCopy.querySelector('.btn_el_delete').addEventListener('click', function(evt) {
+    const cardItem = evt.target.closest('.card');
+    cardItem.remove();
+  });
+
+  gallery.prepend(cardCopy); // добавляем заполненный шаблон в DOM (в начало gallery)
 }
 
 // пропускаем массив с карточками через forEach с применением функции, добавляющей карточки
@@ -91,19 +101,43 @@ function confirmChanges(evt) {
 }
 
 editBtn.addEventListener('click', editProfile); // добавляем слушатель на кнопку редактирования профиля
-editForm.addEventListener('submit', confirmChanges); // добавляем слушатель на кнопку "сохранить"
+editForm.addEventListener('submit', confirmChanges); // добавляем слушатель на форму
 
 
 // ФОРМА ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ
 // клик на ДОБАВИТЬ:
 function addCard() {
   addPopup.classList.add('popup_opened'); // открываем попап
-  //
+  // тут вроде больше ничего не надо
+}
+
+// клик на СОЗДАТЬ (добавление карточки):
+function createCard(evt) {
+  evt.preventDefault(); // отмена стандартной отправки формы
+
+  const newCard = cardTemplate.querySelector('.card').cloneNode(true); // клонируем содержимое шаблона
+  // далее заполняем шаблон
+  newCard.querySelector('.card__image').alt = inputCardName.value;
+  newCard.querySelector('.card__image').src = inputLink.value;
+  newCard.querySelector('.card__title').textContent = inputCardName.value;
+
+  // навешиваем возможность "лайкать"
+  newCard.querySelector('.btn_el_like').addEventListener('click', function(evt) {
+    evt.target.classList.toggle('js-active');
+  });
+
+ // навешиваем возможность удалять
+ newCard.querySelector('.btn_el_delete').addEventListener('click', function(evt) {
+  const cardItem = evt.target.closest('.card');
+  cardItem.remove();
+});
+
+  gallery.prepend(newCard); // добавляем заполненный шаблон в DOM (в начало gallery)
+
+  addPopup.classList.remove('popup_opened'); // закрываем попап
 }
 
 
-// клик на СОЗДАТЬ (добавление карточки):
-
-
 addBtn.addEventListener('click', addCard); // добавляем слушатель на кнопку добавления карточки
+addForm.addEventListener('submit', createCard); // добавляем слушатель на форму
 
