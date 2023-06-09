@@ -64,6 +64,25 @@ function openImage(name, link) {
   gallery.after(imageCopy); // добавляет код шаблона после gallery
 }
 
+// функционал карточки (лайки, удаление, разворот картинки)
+function cardFunctional(item, inpName, inpLink) {
+  // навешиваем возможность "лайкать"
+  item.querySelector('.btn_el_like').addEventListener('click', function(evt) {
+    evt.target.classList.toggle('js-active');
+  });
+
+  // навешиваем возможность удалять
+  item.querySelector('.btn_el_delete').addEventListener('click', function(evt) {
+    const cardItem = evt.target.closest('.card');
+    cardItem.remove();
+  });
+
+  // навешиваем возможность разворачивать картинку на каждую картинку
+  item.querySelector('.card__image').addEventListener('click', function() {
+    openImage(inpName, inpLink); // используем функцию
+  });
+}
+
 // ОТКРЫЛИ СТРАНИЦУ
 // добавляем на страницу "стартовые" карточки
 function addInitialCards(name, link) {
@@ -73,21 +92,7 @@ function addInitialCards(name, link) {
   cardCopy.querySelector('.card__image').src = link;
   cardCopy.querySelector('.card__title').textContent = name;
 
-  // навешиваем возможность "лайкать"
-  cardCopy.querySelector('.btn_el_like').addEventListener('click', function(evt) {
-    evt.target.classList.toggle('js-active');
-  });
-
- // навешиваем возможность удалять
- cardCopy.querySelector('.btn_el_delete').addEventListener('click', function(evt) {
-    const cardItem = evt.target.closest('.card');
-    cardItem.remove();
-  });
-
-// навешиваем возможность разворачивать картинку на каждую картинку
- cardCopy.querySelector('.card__image').addEventListener('click', function() {
-  openImage(name, link); // используем функцию
-});
+  cardFunctional(cardCopy, name, link); // добавляем карточке функционал
 
   gallery.prepend(cardCopy); // добавляем заполненный шаблон в DOM (в начало gallery)
 }
@@ -130,7 +135,8 @@ editForm.addEventListener('submit', confirmChanges); // добавляем сл�
 // клик на ДОБАВИТЬ:
 function addCard() {
   addPopup.classList.add('popup_opened'); // открываем попап
-  // тут вроде больше ничего не надо
+  inputCardName.value = ""; // при открытии поле должно быть пустым
+  inputLink.value = ""; // при открытии поле должно быть пустым
 }
 
 // клик на СОЗДАТЬ (добавление карточки):
@@ -143,21 +149,7 @@ function createCard(evt) {
   newCard.querySelector('.card__image').src = inputLink.value;
   newCard.querySelector('.card__title').textContent = inputCardName.value;
 
-  // навешиваем возможность "лайкать"
-  newCard.querySelector('.btn_el_like').addEventListener('click', function(evt) {
-    evt.target.classList.toggle('js-active');
-  });
-
- // навешиваем возможность удалять
- newCard.querySelector('.btn_el_delete').addEventListener('click', function(evt) {
-  const cardItem = evt.target.closest('.card');
-  cardItem.remove();
-});
-
-// навешиваем возможность разворачивать картинку на каждую картинку
-newCard.querySelector('.card__image').addEventListener('click', function() {
-  openImage(inputCardName.value, inputLink.value); // используем функцию
-});
+  cardFunctional(newCard, inputCardName.value, inputLink.value); // добавляем карточке функционал
 
   gallery.prepend(newCard); // добавляем заполненный шаблон в DOM (в начало gallery)
 
@@ -167,4 +159,5 @@ newCard.querySelector('.card__image').addEventListener('click', function() {
 
 addBtn.addEventListener('click', addCard); // добавляем слушатель на кнопку добавления карточки
 addForm.addEventListener('submit', createCard); // добавляем слушатель на форму
+
 
