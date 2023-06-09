@@ -42,60 +42,6 @@
                                             <!-- Блок gallery -->
         <section class="gallery content__section">
 
-          <div class="card">
-            <img class="card__image" src="./images/img-church.jpg" alt="сентинский храм">
-
-            <div class="card__info">
-              <h2 class="card__title">Карачаевск</h2>
-              <button class="btn btn_el_like" type="button"></button>
-            </div>
-          </div>
-
-          <div class="card">
-            <img class="card__image" src="./images/img-mountains.jpg" alt="вид на горы из домбая">
-
-            <div class="card__info">
-              <h2 class="card__title">Домбай</h2>
-              <button class="btn btn_el_like" type="button"></button>
-            </div>
-          </div>
-
-          <div class="card">
-            <img class="card__image" src="./images/custom-images/christian-grab-AygJgCM_vto-unsplash_small.jpg" alt="присыпанный снегом еловый лес в тумане">
-
-            <div class="card__info">
-              <h2 class="card__title">Зимний лес</h2>
-              <button class="btn btn_el_like" type="button"></button>
-            </div>
-          </div>
-
-          <div class="card">
-            <img class="card__image" src="./images/custom-images/cristina-gottardi-9TaYFMMapbA-unsplash.jpg" alt="морозное утро в горах">
-
-            <div class="card__info">
-              <h2 class="card__title">Снег в горах</h2>
-              <button class="btn btn_el_like" type="button"></button>
-            </div>
-          </div>
-
-          <div class="card">
-            <img class="card__image" src="./images/custom-images/federico-bottos-Z3NceSeZqgI-unsplash.jpg" alt="хвойный лес ранней осенью">
-
-            <div class="card__info">
-              <h2 class="card__title">Еще лес</h2>
-              <button class="btn btn_el_like" type="button"></button>
-            </div>
-          </div>
-
-          <div class="card">
-            <img class="card__image" src="./images/custom-images/eberhard-grossgasteiger-5P91SF0zNsI-unsplash.jpg" alt="вид на осенний лес и горную гряду">
-
-            <div class="card__info">
-              <h2 class="card__title">И снова лес</h2>
-              <button class="btn btn_el_like" type="button"></button>
-            </div>
-          </div>
-
         </section>
 
       </main>
@@ -107,7 +53,7 @@
 
     </div>
 
-    <div class="popup">                   <!-- popup_opened полупрозрачный оверлей -->
+    <div class="popup popup_type_profile-info">                   <!-- popup_opened полупрозрачный оверлей -->
 
       <div class="popup__container">        <!-- обертка для кнопки и формы -->
         <button class="btn btn_el_close" type="button"></button>  <!-- закрыть окно -->
@@ -131,6 +77,42 @@
         </form>
       </div>
     </div>
+
+    <div class="popup popup_type_new-card">                   <!-- popup_opened полупрозрачный оверлей -->
+
+      <div class="popup__container">        <!-- обертка для кнопки и формы -->
+        <button class="btn btn_el_close" type="button"></button>  <!-- закрыть окно -->
+
+        <form class="popup__add-form" name="add-card-form">                         <!-- начало формы -->
+
+    <!-- заголовок формы -->
+          <h2 class="popup__heading">Новое место</h2>
+
+    <!-- название картинки -->
+            <input class="popup__input popup__input_type_name" type="text" name="card-name"
+              value="" placeholder="Название">
+
+    <!-- ссылка -->
+            <input class="popup__input popup__input_type_description" type="text" name="card-link"
+              value="" placeholder="Ссылка на картинку">
+
+    <!-- поле сохранения -->
+            <button class="btn btn_el_save" type="submit">Создать</button>
+
+        </form>
+      </div>
+    </div>
+
+    <template id="card">
+      <div class="card">
+        <img class="card__image" src="" alt="">
+
+        <div class="card__info">
+          <h2 class="card__title"></h2>
+          <button class="btn btn_el_like" type="button"></button>
+        </div>
+      </div>
+    </template>
 
     <script src="./script.js"></script>
   </body>
