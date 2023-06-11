@@ -53,15 +53,16 @@
 
     </div>
 
+                                          <!-- ПОПАП редактирования профиля -->
     <div class="popup popup_type_profile-info">                   <!-- popup_opened полупрозрачный оверлей -->
 
       <div class="popup__container">        <!-- обертка для кнопки и формы -->
         <button class="btn btn_el_close" type="button"></button>  <!-- закрыть окно -->
 
-        <form class="popup__edit-form" name="profile-redact-form">                         <!-- начало формы -->
+        <!-- заголовок формы -->
+        <h2 class="popup__heading">Редактировать профиль</h2>
 
-    <!-- заголовок формы -->
-          <h2 class="popup__heading">Редактировать профиль</h2>
+        <form class="popup__edit-form" name="profile-redact-form">                         <!-- начало формы -->
 
     <!-- поле с именем профиля -->
             <input class="popup__input popup__input_type_name" type="text" name="profile-name"
@@ -78,15 +79,16 @@
       </div>
     </div>
 
+                                          <!-- ПОПАП добавления карточки -->
     <div class="popup popup_type_new-card">                   <!-- popup_opened полупрозрачный оверлей -->
 
       <div class="popup__container">        <!-- обертка для кнопки и формы -->
         <button class="btn btn_el_close" type="button"></button>  <!-- закрыть окно -->
 
-        <form class="popup__add-form" name="add-card-form">                         <!-- начало формы -->
+        <!-- заголовок формы -->
+        <h2 class="popup__heading">Новое место</h2>
 
-    <!-- заголовок формы -->
-          <h2 class="popup__heading">Новое место</h2>
+        <form class="popup__add-form" name="add-card-form">                         <!-- начало формы -->
 
     <!-- название картинки -->
             <input class="popup__input popup__input_type_name" type="text" name="card-name"
@@ -103,6 +105,18 @@
       </div>
     </div>
 
+                                        <!-- ПОПАП разворачивания картинки -->
+    <div class="popup popup_type_image-open">                   <!-- popup_opened полупрозрачный оверлей -->
+
+        <figure class="popup__wrapper">
+          <button class="btn btn_el_close" type="button"></button>  <!-- закрыть окно -->
+          <img class="popup__image" src="" alt="">
+          <figcaption class="popup__description"></figcaption>
+        </figure>
+
+    </div>
+
+                                        <!-- ШАБЛОН для добавления новых карточек -->
     <template id="card">
       <div class="card">
         <button class="btn btn_el_delete" type="button"></button>
@@ -115,18 +129,7 @@
       </div>
     </template>
 
-    <template id="image">
-      <div class="popup popup_type_image-open popup_opened">                   <!-- popup_opened полупрозрачный оверлей -->
-
-        <figure class="popup__wrapper">
-          <button class="btn btn_el_close" type="button"></button>  <!-- закрыть окно -->
-          <img class="popup__image" src="" alt="">
-          <figcaption class="popup__description"></figcaption>
-        </figure>
-
-    </div>
-    </template>
-
+    <script src="./cards.js"></script>
     <script src="./script.js"></script>
   </body>
 </html>
