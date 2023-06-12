@@ -44,7 +44,7 @@ function openImage(name, link) {
   imageFull.alt = name;
   descriptionFull.textContent = name;
 
-  openPopup(imagePopup);
+  openPopup(imagePopup); // и показываем попап с заполненным содержимым
 }
 
 // функционал карточки (лайки, удаление, разворот картинки)
@@ -66,30 +66,29 @@ function addFunctional(item, inpName, inpLink) {
   });
 }
 
-// ОТКРЫЛИ СТРАНИЦУ
-// добавляем на страницу "стартовые" карточки
-function addInitialCards(object) { // принимает на вход объект
+// создание карточки
+function makeCard(object) { // принимает на вход объект
   const cardCopy = card.cloneNode(true); // клонируем содержимое шаблона
   // далее заполняем шаблон
   cardCopy.querySelector('.card__image').alt = object.name;
   cardCopy.querySelector('.card__image').src = object.link;
   cardCopy.querySelector('.card__title').textContent = object.name;
 
-
   addFunctional(cardCopy, object.name, object.link); // добавляем карточке функционал
 
-  pasteCard(cardCopy); // добавляем заполненный шаблон в DOM (в начало gallery)
+  return cardCopy;
 }
 
-// пропускаем массив с карточками через forEach с применением функции, добавляющей карточки
+// пропускаем массив с начальными карточками через forEach с применением функций, создающей и добавляющей карточки
 initialCards.forEach((item) => {
-  addInitialCards(item); // параметры - ключи name и link текущего элемента массива
+  const newCard = makeCard(item); // параметры - ключи name и link текущего элемента массива
+  pasteCard(newCard);
 });
 
 
 // ФОРМА РЕДАКТИРОВАНИЯ ПРОФИЛЯ
 // клик на РЕДАКТИРОВАТЬ:
-function editProfile() {
+function openProfilePopup() {
   openPopup(profilePopup); // открываем попап
   inputName.value = profileName.textContent; // при открытии заполняем значение поля указанным на странице
   inputDetail.value = profileDetail.textContent; // при открытии заполняем значение поля указанным на странице
@@ -111,35 +110,29 @@ function confirmChanges(evt) {
     closePopup(profilePopup); // закрываем попап
 }
 
-profileBtn.addEventListener('click', editProfile); // добавляем слушатель на кнопку редактирования профиля
+profileBtn.addEventListener('click', openProfilePopup); // добавляем слушатель на кнопку редактирования профиля
 profileForm.addEventListener('submit', confirmChanges); // добавляем слушатель на форму
 
 
 // ФОРМА ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ
 // клик на ДОБАВИТЬ:
-function addCard() {
+function openCardPopup() {
   openPopup(cardPopup); // открываем попап
   inputCardName.value = ""; // при открытии поле должно быть пустым
   inputLink.value = ""; // при открытии поле должно быть пустым
 }
 
 // клик на СОЗДАТЬ (добавление карточки):
-function createCard(evt) {
+function addCard(evt) {
   evt.preventDefault(); // отмена стандартной отправки формы
 
-  const newCard = card.cloneNode(true); // клонируем содержимое шаблона
-  // далее заполняем шаблон, беря значения из заполненных полей
-  newCard.querySelector('.card__image').alt = inputCardName.value;
-  newCard.querySelector('.card__image').src = inputLink.value;
-  newCard.querySelector('.card__title').textContent = inputCardName.value;
-
-  addFunctional(newCard, inputCardName.value, inputLink.value); // добавляем карточке функционал
+  const cardObj = {name: inputCardName.value, link: inputLink.value}; // создаем объект из заполненных полей input
+  const newCard = makeCard(cardObj); // пропускаем объект через функцию создания новой карточки
 
   pasteCard(newCard); // добавляем заполненный шаблон в DOM (в начало gallery)
 
   closePopup(cardPopup); // закрываем попап
 }
 
-
-newCardBtn.addEventListener('click', addCard); // добавляем слушатель на кнопку добавления карточки
-cardForm.addEventListener('submit', createCard); // добавляем слушатель на форму
+newCardBtn.addEventListener('click', openCardPopup); // добавляем слушатель на кнопку добавления карточки
+cardForm.addEventListener('submit', addCard); // добавляем слушатель на форму
