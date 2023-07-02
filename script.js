@@ -145,3 +145,11 @@ document.addEventListener('click', function(evt) {
     closePopup(evt.target);
   }
 })
+
+// закрывать при нажатии 'Esc'
+document.addEventListener('keydown', function(evt) {
+  if (evt.key === 'Escape') {
+    const popup = document.querySelector('.popup_opened'); // найти открытый попап по соответствующему селектору
+    closePopup(popup);                                     // и закрыть его
+  }
+});
