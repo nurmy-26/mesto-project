@@ -136,3 +136,12 @@ function addCard(evt) {
 
 newCardBtn.addEventListener('click', openCardPopup); // добавляем слушатель на кнопку добавления карточки
 cardForm.addEventListener('submit', addCard); // добавляем слушатель на форму
+
+// ------------------------- НОВЫЙ ФУНКЦИОНАЛ -------------------------------
+
+// закрывать при клике по оверлею
+document.addEventListener('click', function(evt) {
+  if (evt.target.classList.contains('popup')) {
+    closePopup(evt.target);
+  }
+})
