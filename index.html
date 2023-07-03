@@ -62,15 +62,35 @@
         <!-- заголовок формы -->
         <h2 class="popup__heading">Редактировать профиль</h2>
 
-        <form class="popup__edit-form" name="profile-redact-form">                         <!-- начало формы -->
+        <form class="popup__edit-form" name="profile-redact-form" novalidate>                         <!-- начало формы -->
 
     <!-- поле с именем профиля -->
-            <input class="popup__input popup__input_type_name" type="text" name="profile-name"
-              value="" placeholder="Введите своё имя">
+
+            <input
+              class="popup__input popup__input_type_name"
+              name="profile-name"
+              type="text"
+              value=""
+              placeholder="Введите своё имя"
+              minlength="2" maxlength="40"
+              pattern="[а-яА-Яa-zA-Zё\s-]+"
+              data-custom-message="Поле может содержать только латинские или кириллические буквы и знаки дефиса."
+              required>
+            <span class="popup__error popup__error_type_profile-name"></span>
 
     <!-- поле с подписью профиля -->
-            <input class="popup__input popup__input_type_description" type="text" name="profile-description"
-              value="" placeholder="Добавьте подпись">
+
+            <input
+              class="popup__input popup__input_type_description"
+              name="profile-description"
+              type="text"
+              value=""
+              placeholder="Добавьте подпись"
+              minlength="2" maxlength="200"
+              pattern="[а-яА-Яa-zA-Zё\s-]+"
+              data-custom-message="Поле может содержать только латинские или кириллические буквы и знаки дефиса."
+              required>
+            <span class="popup__error popup__error_type_profile-description"></span>
 
     <!-- поле сохранения -->
             <button class="btn btn_el_save" type="submit">Сохранить</button>
@@ -88,15 +108,27 @@
         <!-- заголовок формы -->
         <h2 class="popup__heading">Новое место</h2>
 
-        <form class="popup__add-form" name="add-card-form">                         <!-- начало формы -->
+        <form class="popup__add-form" name="add-card-form" novalidate>                         <!-- начало формы -->
 
     <!-- название картинки -->
-            <input class="popup__input popup__input_type_name" type="text" name="card-name"
-              value="" placeholder="Название">
+
+            <input
+              class="popup__input popup__input_type_name"
+              name="card-name"
+              type="text"
+              value=""
+              placeholder="Название">
+            <span class="popup__error popup__error_type_card-name"></span>
 
     <!-- ссылка -->
-            <input class="popup__input popup__input_type_description" type="text" name="card-link"
-              value="" placeholder="Ссылка на картинку">
+
+            <input
+              class="popup__input popup__input_type_description"
+              name="card-link"
+              type="text"
+              value=""
+              placeholder="Ссылка на картинку">
+            <span class="popup__error popup__error_type_card-link"></span>
 
     <!-- поле сохранения -->
             <button class="btn btn_el_save" type="submit">Создать</button>

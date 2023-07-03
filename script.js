@@ -140,7 +140,8 @@ cardForm.addEventListener('submit', addCard); // добавляем слушат
 // ------------------------- НОВЫЙ ФУНКЦИОНАЛ -------------------------------
 
 // закрывать при клике по оверлею
-document.addEventListener('click', function(evt) {
+// mousedown - чтобы не закрывалось при выделении текста и слцчайном отпускании за границей попапа
+document.addEventListener('mousedown', function(evt) {
   if (evt.target.classList.contains('popup')) {
     closePopup(evt.target);
   }
@@ -153,3 +154,62 @@ document.addEventListener('keydown', function(evt) {
     closePopup(popup);                                     // и закрыть его
   }
 });
+
+
+// показать ошибку
+function showError(formEl, inputEl) {
+  // errorText
+  const errorEl = formEl.querySelector(`.popup__error_type_${inputEl.name}`);
+  inputEl.classList.add('popup__input_invalid');
+  errorEl.textContent = inputEl.validationMessage;
+}
+
+// скрыть ошибку
+function hideError(formEl, inputEl) {
+  // errorText
+  const errorEl = formEl.querySelector(`.popup__error_type_${inputEl.name}`);
+  inputEl.classList.remove('popup__input_invalid');
+  errorEl.textContent = '';
+}
+
+// проверить поле на ошибку
+function isValid(formEl, inputEl) {
+  if (inputEl.validity.patternMismatch) {
+    // если ошибка срабатывает из-за указанного в pattern, заменить текст ошики на кастомное сообщение
+    inputEl.setCustomValidity(inputEl.dataset.customMessage);
+  } else {
+    // иначе - на пустую строку для последующего заполнения стандартным сообщением
+    inputEl.setCustomValidity('');
+  }
+
+  if (!inputEl.validity.valid) {
+    showError(formEl, inputEl);
+  } else {
+    hideError(formEl, inputEl);
+  }
+}
+
+// повесить слушатель (проверки на ошибку) на каждое поле формы
+function setValidListeners(formEl) {
+  const inputList = Array.from(formEl.querySelectorAll('.popup__input'));
+  inputList.forEach((input) => {
+    input.addEventListener('input', () => {
+      isValid(formEl, input);
+    })
+  })
+}
+
+// проверка всех форм на валидность
+function doValidation() {
+  const formList = Array.from(document.querySelectorAll('form'));
+  formList.forEach((form) => {
+    setValidListeners(form);
+  })
+}
+
+// запуск проверки всех форм и полей в них
+doValidation();
+
+// осталось:
+// - разобраться с кнопкой "сохранить"
+// - валидация добавления карточек

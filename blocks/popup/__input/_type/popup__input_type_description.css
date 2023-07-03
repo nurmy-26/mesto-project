@@ -1,9 +1,0 @@
-.popup__input_type_description {
-  margin-bottom: 48px;
-}
-
-@media (max-width: 631.98px) {
-  .popup__input_type_description {
-    margin-bottom: 45px;
-  }
-}

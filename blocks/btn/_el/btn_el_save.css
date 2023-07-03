@@ -2,6 +2,7 @@
   width: 358px;
   height: 50px;
   border-radius: 2px;
+  margin-top: 11px;
 
   font-family: 'Inter', Arial, sans-serif;
   font-size: 18px;
@@ -14,10 +15,20 @@
   opacity: .8;
 }
 
+/* для неактивной кнопки ( с атрибутом disabled */
+.btn_el_save:disabled {
+  border: 1px solid #000;
+  background-color: #fff;
+  color: #000;
+  opacity: .2;
+  cursor: default; /* проверить нужно ли или курсор сам будет меняться*/
+}
+
 @media (max-width: 631.98px) {
   .btn_el_save {
     width: 238px;
     height: 46px;
+    margin-top: 8px;
 
     font-size: 14px;
     line-height: 17px;

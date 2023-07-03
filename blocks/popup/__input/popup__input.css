@@ -7,9 +7,19 @@
 
   padding-bottom: 8px;
   border-bottom: 1px solid rgba(0, 0, 0, .2);
+  border-radius: 2px; /* для скругления при фокусе на поле */
 
   font-family: 'Inter', Arial, sans-serif;
   font-size: 14px;
   line-height: 17px;
   color: #000;
+}
+
+.popup__input_invalid {
+  border-color: #f00;
+}
+
+.popup__input:focus {
+  outline: 2px solid #69f;
+  box-shadow: 0 0 2px 2px #69f;
 }
