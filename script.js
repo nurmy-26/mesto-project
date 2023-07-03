@@ -26,11 +26,18 @@ const gallery = document.querySelector('.gallery');
 // открыть попап
 function openPopup(popupElement) {
   popupElement.classList.add('popup_opened');
+  // при открытии попапа кнопка должна быть активна (вдруг пользователь передумал менять инф-ю)
+  const button = popupElement.querySelector('.btn_el_save');
+  button.disabled = false;
 }
 
 // закрыть попап
 function closePopup(popupElement) {
   popupElement.classList.remove('popup_opened');
+  const inputList = Array.from(popupElement.querySelectorAll('.popup__input'));
+  inputList.forEach((input) => {
+    hideError(popupElement, input);
+  })
 }
 
 // функция "вставить карточку" в начало галереи
@@ -158,7 +165,6 @@ document.addEventListener('keydown', function(evt) {
 
 // показать ошибку
 function showError(formEl, inputEl) {
-  // errorText
   const errorEl = formEl.querySelector(`.popup__error_type_${inputEl.name}`);
   inputEl.classList.add('popup__input_invalid');
   errorEl.textContent = inputEl.validationMessage;
@@ -166,7 +172,6 @@ function showError(formEl, inputEl) {
 
 // скрыть ошибку
 function hideError(formEl, inputEl) {
-  // errorText
   const errorEl = formEl.querySelector(`.popup__error_type_${inputEl.name}`);
   inputEl.classList.remove('popup__input_invalid');
   errorEl.textContent = '';
@@ -192,9 +197,13 @@ function isValid(formEl, inputEl) {
 // повесить слушатель (проверки на ошибку) на каждое поле формы
 function setValidListeners(formEl) {
   const inputList = Array.from(formEl.querySelectorAll('.popup__input'));
+  const button = formEl.querySelector('.btn_el_save');
+
   inputList.forEach((input) => {
     input.addEventListener('input', () => {
       isValid(formEl, input);
+      // по мере заполнения полей выносим вердикт кнопке:
+      switchBtn (button, formEl);
     })
   })
 }
@@ -211,5 +220,12 @@ function doValidation() {
 doValidation();
 
 // осталось:
-// - разобраться с кнопкой "сохранить"
 // - валидация добавления карточек
+
+// вынести вердикт кнопке
+function switchBtn (button, formEl) {
+  // переменная булевого типа (true - если всё ок, false - в форме есть невалидное поле)
+  const formValidity = formEl.checkValidity();
+  // отрицание, т.к. если всё ок - это true, а нам нужно false (и наоборот)
+  button.disabled = !formValidity;
+}

@@ -12,6 +12,7 @@
 @import url(../blocks/popup/__container/popup__container.css);
 @import url(../blocks/popup/__heading/popup__heading.css);
 @import url(../blocks/popup/__input/popup__input.css);
+@import url(../blocks/popup/__error/popup__error.css);
 @import url(../blocks/popup/__wrapper/popup__wrapper.css);
 @import url(../blocks/popup/__image/popup__image.css);
 @import url(../blocks/popup/__description/popup__description.css);
@@ -42,16 +43,3 @@
 
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);
-
-/* popup__profile-name-error, popup__profile-name-error - имена для поиска в DOM */
-.popup__error {
-  display: block;
-  margin-top: 5px;
-  min-height: 32px;
-
-  font-family: 'Inter', Arial, sans-serif;
-  font-size: 12px;
-  line-height: normal;
-  font-weight: 400;
-  color: #f00;
-}

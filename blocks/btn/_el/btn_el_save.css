@@ -15,13 +15,13 @@
   opacity: .8;
 }
 
-/* для неактивной кнопки ( с атрибутом disabled */
+/* для неактивной кнопки (с атрибутом disabled) */
 .btn_el_save:disabled {
   border: 1px solid #000;
   background-color: #fff;
   color: #000;
   opacity: .2;
-  cursor: default; /* проверить нужно ли или курсор сам будет меняться*/
+  cursor: default;
 }
 
 @media (max-width: 631.98px) {
