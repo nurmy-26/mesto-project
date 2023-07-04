@@ -1,3 +1,5 @@
+import '../pages/index.css';
+
 import {profileBtn, profileForm, newCardBtn, cardForm, closeBtnList, closePopup} from './js/utils.js';
 import {initialCards, makeCard, pasteCard} from './js/card.js';
 import {openProfilePopup, confirmChanges, openCardPopup, addCard} from './js/modal.js';
