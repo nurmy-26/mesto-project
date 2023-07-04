@@ -117,7 +117,11 @@
               name="card-name"
               type="text"
               value=""
-              placeholder="Название">
+              placeholder="Название"
+              minlength="2" maxlength="30"
+              pattern="[а-яА-Яa-zA-Zё\s-]+"
+              data-custom-message="Поле может содержать только латинские или кириллические буквы и знаки дефиса."
+              required>
             <span class="popup__error popup__error_type_card-name"></span>
 
     <!-- ссылка -->
@@ -125,9 +129,10 @@
             <input
               class="popup__input popup__input_type_description"
               name="card-link"
-              type="text"
+              type="url"
               value=""
-              placeholder="Ссылка на картинку">
+              placeholder="Ссылка на картинку"
+              required>
             <span class="popup__error popup__error_type_card-link"></span>
 
     <!-- поле сохранения -->
