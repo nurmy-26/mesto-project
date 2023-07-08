@@ -1,9 +1,9 @@
-import '../pages/index.css';
+import './pages/index.css';
 
-import {profileBtn, profileForm, newCardBtn, cardForm, closeBtnList, closePopup} from './js/utils.js';
-import {initialCards, makeCard, pasteCard} from './js/card.js';
-import {openProfilePopup, confirmChanges, openCardPopup, addCard} from './js/modal.js';
-import {doValidation} from './js/validate.js';
+import {profileBtn, profileForm, newCardBtn, cardForm, closeBtnList, closePopup, popupList} from './components/utils.js';
+import {initialCards, makeCard, pasteCard} from './components/card.js';
+import {openProfilePopup, confirmChanges, openCardPopup, addCard} from './components/modal.js';
+import {enableValidation, settings} from './components/validate.js';
 
 // создаем начальные карточки
 initialCards.forEach((item) => {
@@ -20,30 +20,21 @@ newCardBtn.addEventListener('click', openCardPopup); // добавляем сл�
 cardForm.addEventListener('submit', addCard); // добавляем слушатель на форму
 
 
-// добавляем слушатель на любую кнопку ЗАКРЫТЬ:
-closeBtnList.forEach(function(item) {
-  const itemPopup = item.closest('.popup'); // нашли родителя с нужным классом
-  item.addEventListener('click', () => closePopup(itemPopup)); // закрываем попап при нажатии на крестик
-});
-
-// закрывать при клике по оверлею
+// закрывать при клике по оверлею или крестику
 // mousedown - чтобы не закрывалось при выделении текста и случайном отпускании за границей попапа
-document.addEventListener('mousedown', function(evt) {
-  if (evt.target.classList.contains('popup')) {
-    closePopup(evt.target);
-  }
-})
-
-// закрывать при нажатии 'Esc'
-document.addEventListener('keydown', function(evt) {
-  if (evt.key === 'Escape') {
-    const popup = document.querySelector('.popup_opened'); // найти открытый попап по соответствующему селектору
-    closePopup(popup);                                     // и закрыть его
-  }
+popupList.forEach((popup) => {
+  popup.addEventListener('mousedown', (evt) => {
+    if (evt.target.classList.contains('popup_opened')) {
+      closePopup(popup);
+    }
+    if (evt.target.classList.contains('btn_el_close')) {
+      closePopup(popup);
+    }
+  });
 });
 
 // запуск проверки всех форм и полей в них
-doValidation();
+enableValidation(settings);
 
 
 

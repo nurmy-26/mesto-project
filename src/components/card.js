@@ -65,8 +65,9 @@ export function addFunctional(item, inpName, inpLink) {
 export function makeCard(object) { // принимает на вход объект
   const cardCopy = card.cloneNode(true); // клонируем содержимое шаблона
   // далее заполняем шаблон
-  cardCopy.querySelector('.card__image').alt = object.name;
-  cardCopy.querySelector('.card__image').src = object.link;
+  const imageEl = cardCopy.querySelector('.card__image');
+  imageEl.alt = object.name;
+  imageEl.src = object.link;
   cardCopy.querySelector('.card__title').textContent = object.name;
 
   addFunctional(cardCopy, object.name, object.link); // добавляем карточке функционал

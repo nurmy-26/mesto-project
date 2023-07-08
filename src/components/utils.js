@@ -1,5 +1,4 @@
-import {hideError} from './validate.js';
-
+export const popupList = document.querySelectorAll('.popup'); // все попапы
 export const profilePopup = document.querySelector('.popup_type_profile-info'); // попап редактирования профиля
 export const cardPopup = document.querySelector('.popup_type_new-card'); // попап добавления новой карточки
 export const imagePopup = document.querySelector('.popup_type_image-open'); // попап разворачивания картинки
@@ -25,26 +24,28 @@ export const cardTemplate = document.querySelector('#card').content; // выбр
 export const card = cardTemplate.querySelector('.card'); // шаблон карточки
 export const gallery = document.querySelector('.gallery');
 
+// закрыть попап при нажатии на Esc (для вызова в обработчиках)
+function closeByEscape(evt) {
+  if (evt.key === 'Escape') {
+    const popup = document.querySelector('.popup_opened'); // найти открытый попап по соответствующему селектору
+    closePopup(popup);                                     // и закрыть его
+  }
+}
+
 // открыть попап
 export function openPopup(popupElement) {
   popupElement.classList.add('popup_opened');
-  const button = popupElement.querySelector('.btn_el_save');
-  // при открытии попапа создания новой карточки кнопка должна быть заблокирована
-  // (чтоб невозможно было создать пустую карточку)
-  if (popupElement === cardPopup) {
-    button.disabled = true;
-    // при открытии попапа редактирования профиля кнопка должна быть активна
-    // (вдруг пользователь передумал менять инф-ю, невозможность сразу кликнуть раздражает)
-  } else {
-    button.disabled = false;
-  }
+  document.addEventListener('keydown', closeByEscape); // повесить обработчик Esc
 }
 
 // закрыть попап
 export function closePopup(popupElement) {
   popupElement.classList.remove('popup_opened');
+  /*
   const inputList = Array.from(popupElement.querySelectorAll('.popup__input'));
   inputList.forEach((input) => {
     hideError(popupElement, input);
-  })
+  }) */
+
+  document.addEventListener('keydown', closeByEscape); // убрать обработчик Esc
 }

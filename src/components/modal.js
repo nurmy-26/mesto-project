@@ -1,6 +1,7 @@
 import {profilePopup, cardPopup, profileName, profileDetail,
         inputName, inputDetail, inputCardName, inputLink, openPopup, closePopup} from './utils.js';
 import {pasteCard, makeCard} from './card.js';
+import {settings, isValid, switchBtn} from './validate.js';
 
 // ФОРМА РЕДАКТИРОВАНИЯ ПРОФИЛЯ
 // клик на РЕДАКТИРОВАТЬ:
@@ -8,6 +9,15 @@ export function openProfilePopup() {
   openPopup(profilePopup); // открываем попап
   inputName.value = profileName.textContent; // при открытии заполняем значение поля указанным на странице
   inputDetail.value = profileDetail.textContent; // при открытии заполняем значение поля указанным на странице
+
+  // при открытии состояние полей и кнопки должно проверяться сразу, еще до начала ввода
+  // иначе, если закрыть без сохранения с ошибками, значение полей сбросится, но ошибки и неактивная кнопка останутся
+  const inputList = Array.from(profilePopup.querySelectorAll(settings.inputSelector));
+  const button = profilePopup.querySelector(settings.submitButtonSelector);
+  inputList.forEach((input) => {
+      isValid(profilePopup, input, settings);
+      switchBtn (inputList, button);
+    })
 }
 
 // клик на СОХРАНИТЬ (редактирование профиля):
@@ -24,8 +34,13 @@ export function confirmChanges(evt) {
 // клик на ДОБАВИТЬ:
 export function openCardPopup() {
   openPopup(cardPopup); // открываем попап
-  inputCardName.value = ""; // при открытии поле должно быть пустым
-  inputLink.value = ""; // при открытии поле должно быть пустым
+
+  // при открытии кнопка должна быть неактивна, чтобы не позволить создать пустую карточку
+  const inputList = Array.from(cardPopup.querySelectorAll(settings.inputSelector));
+  const button = cardPopup.querySelector(settings.submitButtonSelector);
+  inputList.forEach((input) => {
+      switchBtn (inputList, button);
+    })
 }
 
 // клик на СОЗДАТЬ (добавление карточки):
@@ -36,6 +51,8 @@ export function addCard(evt) {
   const newCard = makeCard(cardObj); // пропускаем объект через функцию создания новой карточки
 
   pasteCard(newCard); // добавляем заполненный шаблон в DOM (в начало gallery)
+  inputCardName.value = ""; // при новом открытии поле должно быть пустым
+  inputLink.value = ""; // при новом открытии поле должно быть пустым
 
   closePopup(cardPopup); // закрываем попап
 }

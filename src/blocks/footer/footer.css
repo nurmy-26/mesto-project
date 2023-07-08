@@ -1,6 +1,6 @@
 .footer {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   padding-bottom: 60px;
 }
 
