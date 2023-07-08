@@ -21,7 +21,7 @@
 .btn_el_save{background-color:#000;border-radius:2px;color:#fff;font-family:Inter,Arial,sans-serif;font-size:18px;height:50px;line-height:22px;margin-top:11px;width:358px}.btn_el_save:hover{opacity:.8}.btn_el_save:disabled{background-color:#fff;border:1px solid #000;color:#000;cursor:default;opacity:.2}@media (max-width:631.98px){.btn_el_save{font-size:14px;height:46px;line-height:17px;margin-top:8px;width:238px}}
 .btn_el_close{background:url(ad98de32e342afafa118.svg) no-repeat 50%/contain;height:32px;position:absolute;right:-40px;top:-40px;width:32px}@media (max-width:631.98px){.btn_el_close{height:20px;right:0;top:-36px;width:20px}}
 .btn_el_delete{background:url(e3c42771bff3aaa52f76.svg) no-repeat 50%/contain;height:20px;position:absolute;right:20px;top:20px;width:20px}
-.header{border-bottom:1px solid rgba(84,84,84,.7);box-sizing:border-box;display:flex;justify-content:start;min-height:120px;padding-bottom:41px;padding-top:45px}@media (max-width:1024px){.header{padding-left:27px;padding-right:27px}}@media (max-width:700px){.header{min-height:85px;padding-bottom:31px;padding-top:28px}}
+.header{border-bottom:1px solid rgba(84,84,84,.7);box-sizing:border-box;display:flex;justify-content:flex-start;min-height:120px;padding-bottom:41px;padding-top:45px}@media (max-width:1024px){.header{padding-left:27px;padding-right:27px}}@media (max-width:700px){.header{min-height:85px;padding-bottom:31px;padding-top:28px}}
 .logo{height:33px;width:142px}@media (max-width:500px){.logo{height:24px;width:104px}}
 .profile{align-items:center;display:flex;gap:30px;padding-bottom:51px;padding-top:40px}@media (max-width:700px){.profile{flex-direction:column}}@media (max-width:500px){.profile{gap:28px;padding-bottom:36px}}
 .profile__avatar{border-radius:50%;height:120px;-o-object-fit:cover;object-fit:cover;width:120px}
@@ -34,6 +34,6 @@
 .card__image{cursor:pointer;height:282px;-o-object-fit:cover;object-fit:cover;width:282px}
 .card__info{align-items:center;background-color:#fff;display:flex;justify-content:space-between;padding:25px 20px 25px 22px}
 .card__title{color:#000;font-size:24px;font-weight:900;line-height:29px;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.footer{display:flex;justify-content:start;padding-bottom:60px}@media (max-width:700px){.footer{padding-bottom:36px}}
+.footer{display:flex;justify-content:flex-start;padding-bottom:60px}@media (max-width:700px){.footer{padding-bottom:36px}}
 .footer__copyright{color:#545454;font-size:18px;line-height:22px;margin:0}@media (max-width:500px){.footer__copyright{font-size:14px;line-height:17px}}
 
