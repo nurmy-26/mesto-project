@@ -2,14 +2,12 @@ export const settings = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
   submitButtonSelector: '.btn_el_save',
-  // inactiveButtonClass: 'popup__button_disabled', - не нужен, так как у меня атрибут, а не класс
   inputErrorClass: 'popup__input_invalid',
   errorClass: '.popup__error_type_'
 }
 
 // показать ошибку
 export function showError(formEl, inputEl, settings) {
-  // const errorEl = formEl.querySelector(`.popup__error_type_${inputEl.name}`);
   const errorEl = formEl.querySelector(`${settings.errorClass}${inputEl.name}`);
   inputEl.classList.add(settings.inputErrorClass);
   errorEl.textContent = inputEl.validationMessage;
@@ -17,7 +15,6 @@ export function showError(formEl, inputEl, settings) {
 
 // скрыть ошибку
 export function hideError(formEl, inputEl, settings) {
-  // const errorEl = formEl.querySelector(`.popup__error_type_${inputEl.name}`);
   const errorEl = formEl.querySelector(`${settings.errorClass}${inputEl.name}`);
   inputEl.classList.remove(settings.inputErrorClass);
   errorEl.textContent = '';
@@ -26,7 +23,7 @@ export function hideError(formEl, inputEl, settings) {
 // проверить поле на ошибку
 export function isValid(formEl, inputEl, settings) {
   if (inputEl.validity.patternMismatch) {
-    // если ошибка срабатывает из-за указанного в pattern, заменить текст ошики на кастомное сообщение
+    // если ошибка срабатывает из-за указанного в pattern, заменить текст ошибки на кастомное сообщение
     inputEl.setCustomValidity(inputEl.dataset.customMessage);
   } else {
     // иначе - на пустую строку для последующего заполнения стандартным сообщением
@@ -45,12 +42,20 @@ export function hasInvalidInput(inputList) {
   return inputList.some(input => !input.validity.valid);
 }
 
+export function disableBtn(buttonEl) {
+  buttonEl.disabled = true;
+}
+
+export function enableBtn(buttonEl) {
+  buttonEl.disabled = false;
+}
+
 // вынести вердикт кнопке
 export function switchBtn(inputList, buttonEl) {
   if (hasInvalidInput(inputList)) {
-    buttonEl.disabled = true;
+    disableBtn(buttonEl);
   } else {
-    buttonEl.disabled = false;
+    enableBtn(buttonEl);
   }
 };
 
@@ -65,7 +70,7 @@ export function setValidListeners(formEl, settings) {
       // по мере заполнения полей выносим вердикт кнопке:
       switchBtn (inputList, button);
     })
-  })
+  });
 }
 
 // проверка всех форм на валидность

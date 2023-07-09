@@ -30,6 +30,7 @@ export function confirmChanges(evt) {
   closePopup(profilePopup); // закрываем попап
 }
 
+
 // ФОРМА ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ
 // клик на ДОБАВИТЬ:
 export function openCardPopup() {
@@ -38,9 +39,7 @@ export function openCardPopup() {
   // при открытии кнопка должна быть неактивна, чтобы не позволить создать пустую карточку
   const inputList = Array.from(cardPopup.querySelectorAll(settings.inputSelector));
   const button = cardPopup.querySelector(settings.submitButtonSelector);
-  inputList.forEach((input) => {
-      switchBtn (inputList, button);
-    })
+  switchBtn (inputList, button);
 }
 
 // клик на СОЗДАТЬ (добавление карточки):

@@ -1,6 +1,6 @@
 import './pages/index.css';
 
-import {profileBtn, profileForm, newCardBtn, cardForm, closeBtnList, closePopup, popupList} from './components/utils.js';
+import {profileBtn, profileForm, newCardBtn, cardForm, closePopup, popupList} from './components/utils.js';
 import {initialCards, makeCard, pasteCard} from './components/card.js';
 import {openProfilePopup, confirmChanges, openCardPopup, addCard} from './components/modal.js';
 import {enableValidation, settings} from './components/validate.js';
@@ -35,6 +35,4 @@ popupList.forEach((popup) => {
 
 // запуск проверки всех форм и полей в них
 enableValidation(settings);
-
-
 

@@ -41,11 +41,6 @@ export function openPopup(popupElement) {
 // закрыть попап
 export function closePopup(popupElement) {
   popupElement.classList.remove('popup_opened');
-  /*
-  const inputList = Array.from(popupElement.querySelectorAll('.popup__input'));
-  inputList.forEach((input) => {
-    hideError(popupElement, input);
-  }) */
 
-  document.addEventListener('keydown', closeByEscape); // убрать обработчик Esc
+  document.removeEventListener('keydown', closeByEscape); // убрать обработчик Esc
 }
