@@ -3,6 +3,11 @@ import {profilePopup, cardPopup, profileName, profileDetail,
 import {pasteCard, makeCard} from './card.js';
 import {settings, isValid, switchBtn} from './validate.js';
 
+const profilePopupInpuList = Array.from(profilePopup.querySelectorAll(settings.inputSelector));
+const profileSubmitBtn = profilePopup.querySelector(settings.submitButtonSelector);
+const cardPopupInpuList = Array.from(cardPopup.querySelectorAll(settings.inputSelector));
+const cardSubmitBtn = cardPopup.querySelector(settings.submitButtonSelector);
+
 // ФОРМА РЕДАКТИРОВАНИЯ ПРОФИЛЯ
 // клик на РЕДАКТИРОВАТЬ:
 export function openProfilePopup() {
@@ -12,11 +17,9 @@ export function openProfilePopup() {
 
   // при открытии состояние полей и кнопки должно проверяться сразу, еще до начала ввода
   // иначе, если закрыть без сохранения с ошибками, значение полей сбросится, но ошибки и неактивная кнопка останутся
-  const inputList = Array.from(profilePopup.querySelectorAll(settings.inputSelector));
-  const button = profilePopup.querySelector(settings.submitButtonSelector);
-  inputList.forEach((input) => {
+  profilePopupInpuList.forEach((input) => {
       isValid(profilePopup, input, settings);
-      switchBtn (inputList, button);
+      switchBtn (profilePopupInpuList, profileSubmitBtn);
     })
 }
 
@@ -37,9 +40,7 @@ export function openCardPopup() {
   openPopup(cardPopup); // открываем попап
 
   // при открытии кнопка должна быть неактивна, чтобы не позволить создать пустую карточку
-  const inputList = Array.from(cardPopup.querySelectorAll(settings.inputSelector));
-  const button = cardPopup.querySelector(settings.submitButtonSelector);
-  switchBtn (inputList, button);
+  switchBtn (cardPopupInpuList, cardSubmitBtn);
 }
 
 // клик на СОЗДАТЬ (добавление карточки):
