@@ -85,9 +85,6 @@ export function addCard(evt) {
       }
       return Promise.reject(`Ошибка: ${res.status}`);
     })
-    .then((data) => {
-      console.log(data);
-    })
     .catch((err) => {
       console.log(err);
     })
