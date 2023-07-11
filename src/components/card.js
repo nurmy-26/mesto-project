@@ -1,6 +1,8 @@
 import {card, gallery, imageFull, descriptionFull, imagePopup, openPopup} from './utils.js';
+import {config, deleteCard, likeCard, dislikeCard} from './api.js';
 
 // массив начальных карточек
+/*
 export const initialCards = [
   {
     name: 'Архыз',
@@ -26,7 +28,7 @@ export const initialCards = [
     name: 'Байкал',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
-];
+]; */
 
 // функция "вставить карточку" в начало галереи
 export function pasteCard(card) {
@@ -43,16 +45,65 @@ export function openImage(name, link) {
 }
 
 // функционал карточки (лайки, удаление, разворот картинки)
-export function addFunctional(item, inpName, inpLink) {
+export function addFunctional(item, inpName, inpLink, cardObj) {
   // навешиваем возможность "лайкать"
   item.querySelector('.btn_el_like').addEventListener('click', function(evt) {
     evt.target.classList.toggle('js-active');
+
+// если лайкнули - отправляем на сервер свой лайк
+    if (evt.target.classList.contains('js-active')) {
+      likeCard(config, cardObj)
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          }
+          return Promise.reject(`Ошибка: ${res.status}`);
+        })
+        .then((data) => {
+          console.log(data);
+          item.querySelector('.card__like-number').textContent = data.likes.length; // обновляем количество лайков
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    // иначе - убираем
+    } else {
+      dislikeCard(config, cardObj)
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          }
+          return Promise.reject(`Ошибка: ${res.status}`);
+        })
+        .then((data) => {
+          console.log(data);
+          item.querySelector('.card__like-number').textContent = data.likes.length; // обновляем количество лайков
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   });
 
   // навешиваем возможность удалять
   item.querySelector('.btn_el_delete').addEventListener('click', function(evt) {
     const cardItem = evt.target.closest('.card');
     cardItem.remove();
+
+    // удаляем карточку с сервера
+    deleteCard(config, cardObj)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   });
 
   // навешиваем возможность разворачивать картинку на каждую картинку
@@ -69,8 +120,11 @@ export function makeCard(object) { // принимает на вход объе�
   imageEl.alt = object.name;
   imageEl.src = object.link;
   cardCopy.querySelector('.card__title').textContent = object.name;
+  cardCopy.querySelector('.card__like-number').textContent = object.likes.length; // количество лайков
 
-  addFunctional(cardCopy, object.name, object.link); // добавляем карточке функционал
+  addFunctional(cardCopy, object.name, object.link, object); // добавляем карточке функционал
 
   return cardCopy;
 }
+
+

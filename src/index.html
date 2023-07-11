@@ -23,15 +23,17 @@
                                           <!-- Блок profile -->
         <section class="profile content__section">
 
-          <img class="profile__avatar" src="<%=require('./images/default-avatar.jpg')%>" alt="аватар профиля">
+          <div class="profile__avatar-overlay">
+            <img class="profile__avatar" src="<%=require('./images/default-avatar.jpg')%>" alt="аватар профиля">
+          </div>
 
           <div class="profile__flex-container">
 
             <div class="profile__info">
-              <h1 class="profile__name">Жак-Ив Кусто</h1>
+              <h1 class="profile__name"></h1>
               <button class="btn btn_el_edit" type="button"></button>
 
-              <p class="profile__description">Исследователь океана</p>
+              <p class="profile__description"></p>
             </div>
 
             <button class="btn btn_el_add" type="button"></button>
@@ -141,6 +143,36 @@
       </div>
     </div>
 
+                                          <!-- ПОПАП смены аватара -->
+    <div class="popup popup_type_change-avatar">                   <!-- popup_opened полупрозрачный оверлей -->
+
+      <div class="popup__container">        <!-- обертка для кнопки и формы -->
+        <button class="btn btn_el_close" type="button"></button>  <!-- закрыть окно -->
+
+        <!-- заголовок формы -->
+        <h2 class="popup__heading">Обновить аватар</h2>
+
+<!-- начало формы -->
+        <form class="popup__form popup__change-avatar-form" name="change-avatar-form" novalidate>
+
+    <!-- ссылка -->
+
+            <input
+              class="popup__input popup__input_type_description"
+              name="avatar-link"
+              type="url"
+              value=""
+              placeholder="Ссылка на картинку"
+              required>
+            <span class="popup__error popup__error_type_avatar-link"></span>
+
+    <!-- поле сохранения -->
+            <button class="btn btn_el_save" type="submit">Сохранить</button>
+
+        </form>
+      </div>
+    </div>
+
                                         <!-- ПОПАП разворачивания картинки -->
     <div class="popup popup_type_image-open">                   <!-- popup_opened полупрозрачный оверлей -->
 
@@ -160,7 +192,10 @@
 
         <div class="card__info">
           <h2 class="card__title"></h2>
-          <button class="btn btn_el_like" type="button"></button>
+          <div class="card__like-overlay">
+            <button class="btn btn_el_like" type="button"></button>
+            <p class="card__like-number"></p>
+          </div>
         </div>
       </div>
     </template>

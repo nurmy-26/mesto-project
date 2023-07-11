@@ -1,5 +1,5 @@
 .btn_el_like {
-  min-width: 22px; /* иначе сжимается текстом*/
+  min-width: 24px; /* иначе сжимается текстом*/
   height: 20px;
 
   background: url('../../../images/icon_like.svg') no-repeat center/contain;
