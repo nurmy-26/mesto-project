@@ -1,4 +1,4 @@
-import {checkResponse, request} from './utils.js'
+import {request} from './utils.js'
 export const config = {
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-26',
   headers: {
