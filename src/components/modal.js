@@ -1,6 +1,6 @@
 import {profilePopup, cardPopup, avatarPopup, profileName, profileDetail,
         inputName, inputDetail, inputCardName, inputLink, openPopup, closePopup,
-        profileAvatar, avatarLink, renderLoading} from './utils.js';
+        profileAvatar, avatarLink, renderLoading, handleSubmit, request} from './utils.js';
 import {pasteCard, makeCard} from './card.js';
 import {settings, isValid, switchBtn} from './validate.js';
 import {config, patchProfileInfo, postNewCard, saveAvatar} from './api.js';
@@ -29,32 +29,17 @@ export function openProfilePopup() {
 
 // клик на СОХРАНИТЬ (редактирование профиля):
 export function confirmChanges(evt) {
-  evt.preventDefault(); // отмена стандартной отправки формы
+  function makeRequest() {
+    return patchProfileInfo(config, inputName.value, inputDetail.value) // сохраняем введенные данные на сервере
+      .then((data) => { // в случае удачного запроса:
+        profileName.textContent = data.name; // меняем имя на введенное
+        profileDetail.textContent = data.about; // меняем подпись на введенную
+        closePopup(profilePopup); // закрываем попап
+      });
+  }
 
-  profileName.textContent = inputName.value; // меняем имя на введенное
-  profileDetail.textContent = inputDetail.value; // меняем подпись на введенную
-
-  // Сохранение...
-  const defaultText = profileSubmitBtn.textContent;
-  renderLoading(true, profileSubmitBtn, defaultText);
-
-  patchProfileInfo(config, profileName.textContent, profileDetail.textContent) // сохраняем введенные данные на сервере
-    .then((res) => {
-      if (!res.ok) {
-        return Promise.reject(`Ошибка: ${res.status}`);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-      // Сохранение... - конец отображения
-    .finally(() => {
-      renderLoading(false, profileSubmitBtn, defaultText);
-    });
-
-  closePopup(profilePopup); // закрываем попап
+  handleSubmit(makeRequest, evt); // функция, отвечающая за поведение формы при сабмите
 }
-
 
 // ФОРМА ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ
 // клик на ДОБАВИТЬ:
@@ -67,40 +52,19 @@ export function openCardPopup() {
 
 // клик на СОЗДАТЬ (добавление карточки):
 export function addCard(evt) {
-  evt.preventDefault(); // отмена стандартной отправки формы
+  // создаем объект из заполненных полей input
+  const cardObj = {name: inputCardName.value, link: inputLink.value};
 
-  // создаем объект из заполненных полей input и с пустым счетчиком лайков
-  const cardObj = {name: inputCardName.value, link: inputLink.value, likes: []};
-  const newCard = makeCard(cardObj); // пропускаем объект через функцию создания новой карточки
+  function makeRequest() {
+    return postNewCard(config, cardObj.name, cardObj.link) // добавляем карточку к другим на сервере
+      .then((obj) => { // в случае удачного запроса:
+        const newCard = makeCard(obj); // пропускаем ПОЛУЧЕННЫЙ объект через функцию создания новой карточки
+        pasteCard(newCard); // добавляем заполненный шаблон в DOM (в начало gallery)
+        closePopup(cardPopup); // закрываем попап
+      })
+  }
 
-  // Сохранение...
-  const defaultText = cardSubmitBtn.textContent;
-  renderLoading(true, cardSubmitBtn, defaultText);
-
-  // отправляем ее к карточкам на сервер
-  postNewCard(config, cardObj.name, cardObj.link)
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((data) => {
-      console.log(data);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-      // Сохранение... - конец отображения
-    .finally(() => {
-      renderLoading(false, cardSubmitBtn, defaultText);
-    });
-
-  pasteCard(newCard); // добавляем заполненный шаблон в DOM (в начало gallery)
-  inputCardName.value = ""; // при новом открытии поле должно быть пустым
-  inputLink.value = ""; // при новом открытии поле должно быть пустым
-
-  closePopup(cardPopup); // закрываем попап
+  handleSubmit(makeRequest, evt); // функция, отвечающая за поведение формы при сабмите
 }
 
 // ФОРМА ИЗМЕНЕНИЯ АВАТАРА
@@ -114,20 +78,86 @@ export function changeAvatarImg() {
 
 // клик на СОХРАНИТЬ (смена аватара):
 export function confirmAvatar(evt) {
+  function makeRequest() {
+    return saveAvatar(config, avatarLink.value) // отправляем обновленную информацию на сервер
+    .then((data) => { // в случае удачного запроса:
+      profileAvatar.src = data.avatar; // меняем путь к картинке на введенный
+      closePopup(avatarPopup); // закрываем попап
+    })
+  }
+
+  handleSubmit(makeRequest, evt); // функция, отвечающая за поведение формы при сабмите
+}
+
+
+/* старые варианты сабмита форм с подробными шагами
+// клик на СОХРАНИТЬ (редактирование профиля):
+export function confirmChanges(evt) {
   evt.preventDefault(); // отмена стандартной отправки формы
 
-  profileAvatar.src = avatarLink.value; // меняем путь к картинке на введенный
+  // Сохранение...
+  const defaultText = profileSubmitBtn.textContent;
+  renderLoading(true, profileSubmitBtn, defaultText);
+
+  patchProfileInfo(config, inputName.value, inputDetail.value) // сохраняем введенные данные на сервере
+    .then((data) => { // в случае удачного запроса:
+      profileName.textContent = data.name; // меняем имя на введенное
+      profileDetail.textContent = data.about; // меняем подпись на введенную
+      closePopup(profilePopup); // закрываем попап
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+      // Сохранение... - конец отображения
+    .finally(() => {
+      renderLoading(false, profileSubmitBtn, defaultText);
+    });
+}
+
+// клик на СОЗДАТЬ (добавление карточки):
+export function addCard(evt) {
+  evt.preventDefault(); // отмена стандартной отправки формы
+
+  // создаем объект из заполненных полей input
+  const cardObj = {name: inputCardName.value, link: inputLink.value};
+
+  // Сохранение...
+  const defaultText = cardSubmitBtn.textContent;
+  renderLoading(true, cardSubmitBtn, defaultText);
+
+  // отправляем ее к карточкам на сервер
+  postNewCard(config, cardObj.name, cardObj.link)
+    .then((obj) => { // в случае удачного запроса:
+      const newCard = makeCard(obj); // пропускаем ПОЛУЧЕННЫЙ объект через функцию создания новой карточки
+      pasteCard(newCard); // добавляем заполненный шаблон в DOM (в начало gallery)
+      inputCardName.value = ""; // при новом открытии поле должно быть пустым
+      inputLink.value = ""; // при новом открытии поле должно быть пустым
+
+      closePopup(cardPopup); // закрываем попап
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+      // Сохранение... - конец отображения
+    .finally(() => {
+      renderLoading(false, cardSubmitBtn, defaultText);
+    });
+}
+
+// клик на СОХРАНИТЬ (смена аватара):
+export function confirmAvatar(evt) {
+  evt.preventDefault(); // отмена стандартной отправки формы
 
   // Сохранение...
   const defaultText = avatarSubmitBtn.textContent;
   renderLoading(true, avatarSubmitBtn, defaultText);
 
   // обновляем на сервере
-  saveAvatar(config, profileAvatar.src)
-    .then((res) => {
-      if (!res.ok) {
-        return Promise.reject(`Ошибка: ${res.status}`);
-      }
+  saveAvatar(config, avatarLink.value)
+    .then((data) => { // в случае удачного запроса:
+      profileAvatar.src = data.avatar; // меняем путь к картинке на введенный
+      avatarLink.value = ""; // очищаем поле ввода перед закрытием
+      closePopup(avatarPopup); // закрываем попап
     })
     .catch((err) => {
       console.log(err);
@@ -136,8 +166,5 @@ export function confirmAvatar(evt) {
     .finally(() => {
       renderLoading(false, avatarSubmitBtn, defaultText);
     });
-
-
-  avatarLink.value = ""; // очищаем поле ввода перед закрытием
-  closePopup(avatarPopup); // закрываем попап
 }
+*/

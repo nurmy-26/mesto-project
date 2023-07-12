@@ -51,11 +51,50 @@ export function closePopup(popupElement) {
   document.removeEventListener('keydown', closeByEscape); // убрать обработчик Esc
 }
 
-// отображение надписи "Сохранение..." пока идет загрузка
-export function renderLoading(isLoading, button, defaultText) {
+// универсальная функция проверки ответа от сервера
+export function checkResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
+
+// функция для универсального запроса с проверкой ответа
+export function request(url, options) {
+  return fetch(url, options).then(checkResponse)
+}
+
+// отображение надписи "Сохранение..." пока идет загрузка (3 и 4 аргументы необязательные)
+export function renderLoading(isLoading, button, defaultText='Сохранить', loadingText='Сохранение...') {
   if (isLoading) {
-    button.textContent = 'Сохранение...';
+    button.textContent = loadingText; // true - отобразит 'Сохранение...'
   } else {
-    button.textContent = defaultText;
+    button.textContent = defaultText; // false - отобразит текст, который был изначально
   }
 }
+
+// ф-я, предотвращающая перезагрузку формы при сабмите, меняющая текст кнопки во время и после запроса, очищающая форму
+// принимает функцию запроса, объект события и текст во время загрузки (по умолчанию - 'Сохранение...')
+export function handleSubmit(request, evt, loadingText = 'Сохранение...') {
+  evt.preventDefault();
+
+  // универсально получаем кнопку сабмита из `evt`
+  const submitButton = evt.submitter;
+  // записываем начальный текст кнопки
+  const initialText = submitButton.textContent;
+  // изменяем текст кнопки до вызова запроса
+  renderLoading(true, submitButton, initialText, loadingText);
+  request()
+    .then(() => {
+      // очищаем форму после успешного ответа от сервера
+      evt.target.reset();
+    })
+    .catch((err) => {
+      console.error(`Ошибка: ${err}`);
+    })
+    // возвращаем начальный текст кнопки
+    .finally(() => {
+      renderLoading(false, submitButton, initialText);
+    });
+}
+
