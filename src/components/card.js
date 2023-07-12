@@ -1,34 +1,6 @@
+import {userId} from '../index.js';
 import {card, gallery, imageFull, descriptionFull, imagePopup, openPopup} from './utils.js';
 import {config, deleteCard, likeCard, dislikeCard} from './api.js';
-
-// массив начальных карточек
-/*
-export const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-]; */
 
 // функция "вставить карточку" в начало галереи
 export function pasteCard(card) {
@@ -48,34 +20,24 @@ export function openImage(name, link) {
 export function addFunctional(item, inpName, inpLink, cardObj) {
   // навешиваем возможность "лайкать"
   item.querySelector('.btn_el_like').addEventListener('click', function(evt) {
-    evt.target.classList.toggle('js-active');
+    const likeNumber = item.querySelector('.card__like-number');
 
-// если лайкнули - отправляем на сервер свой лайк
+// если лайк уже стоял - убираем его и обновляем инфо на сервере
     if (evt.target.classList.contains('js-active')) {
-      likeCard(config, cardObj)
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          }
-          return Promise.reject(`Ошибка: ${res.status}`);
-        })
+      dislikeCard(config, cardObj)
         .then((data) => {
-          item.querySelector('.card__like-number').textContent = data.likes.length; // обновляем количество лайков
+          evt.target.classList.toggle('js-active'); // меняем цвет сердечка на противоположный
+          likeNumber.textContent = data.likes.length; // обновляем количество лайков
         })
         .catch((err) => {
           console.log(err);
         });
-    // иначе - убираем
+    // иначе - ставим (и тоже обновляем)
     } else {
-      dislikeCard(config, cardObj)
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          }
-          return Promise.reject(`Ошибка: ${res.status}`);
-        })
+      likeCard(config, cardObj)
         .then((data) => {
-          item.querySelector('.card__like-number').textContent = data.likes.length; // обновляем количество лайков
+          evt.target.classList.toggle('js-active'); // меняем цвет сердечка на противоположный
+          likeNumber.textContent = data.likes.length; // обновляем количество лайков
         })
         .catch((err) => {
           console.log(err);
@@ -86,15 +48,11 @@ export function addFunctional(item, inpName, inpLink, cardObj) {
   // навешиваем возможность удалять
   item.querySelector('.btn_el_delete').addEventListener('click', function(evt) {
     const cardItem = evt.target.closest('.card');
-    cardItem.remove();
 
     // удаляем карточку с сервера
     deleteCard(config, cardObj)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
+      .then(() => {
+        cardItem.remove();
       })
       .catch((err) => {
         console.log(err);
@@ -119,7 +77,17 @@ export function makeCard(object) { // принимает на вход объе�
 
   addFunctional(cardCopy, object.name, object.link, object); // добавляем карточке функционал
 
+  // если карточка не моя, убираем иконку удаления
+  if (object.owner._id !== userId) {
+    cardCopy.querySelector('.btn_el_delete').remove();
+  }
+
+  // если среди лайков есть мой, закрашиваем сердечко
+  if (object.likes.some(item => {
+    return item._id === userId
+  })) {
+    cardCopy.querySelector('.btn_el_like').classList.add('js-active');
+  }
+
   return cardCopy;
 }
-
-

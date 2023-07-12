@@ -8,52 +8,36 @@ import {openProfilePopup, confirmChanges, openCardPopup, addCard, changeAvatarIm
 import {enableValidation, settings} from './components/validate.js';
 
 import {config, getProfileInfo, getInitialCards} from './components/api.js';
-getProfileInfo(config) // получаем объект пользователя с сервера
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
-  .then((data) => {
-    profileName.textContent = data.name; // меняем имя на присланное с сервера
-    profileDetail.textContent = data.about; // меняем подпись на присланную с сервера
-    profileAvatar.src = data.avatar; // меняем аватар
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+export let userId; // объявляем id пользователя
 
-getInitialCards(config) // получаем массив карточек с сервера
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
-  .then((data) => {
-    // создаем начальные карточки из присланного массива
-    data.forEach((item) => {
+
+
+Promise.all([getProfileInfo(config), getInitialCards(config)])
+  .then (values => {
+
+    const userData = values[0]; // первым получаем объект - данные профиля
+    const cards = values[1]; // вторым получаем массив карточек с сервера
+
+    // console.log(values)
+    // console.log(userData);
+    // console.log(cards);
+
+    profileName.textContent = userData.name; // меняем имя на присланное с сервера
+    profileDetail.textContent = userData.about; // меняем подпись на присланную с сервера
+    profileAvatar.src = userData.avatar; // меняем аватар
+    userId = userData._id; // присваиваем id пользователя
+
+    // прогоняем массив полученных карточек через функцию создания
+    cards.forEach((item) => {
       const newCard = makeCard(item); // параметры - ключи name и link текущего элемента массива
 
-      // если карточка не моя, убираем иконку удаления
-      if (item.owner._id !== '0c4e7ce2312fb70a3ec855e5') {
-        newCard.querySelector('.btn_el_delete').remove();
-      }
-
       pasteCard(newCard);
-    });
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+      });
 
-// создаем начальные карточки (старый способ, из папки)
-/*
-initialCards.forEach((item) => {
-  const newCard = makeCard(item); // параметры - ключи name и link текущего элемента массива
-  pasteCard(newCard);
-}); */
+    })
+    .catch(err => {
+      console.log(err);
+    })
 
 
 profileBtn.addEventListener('click', openProfilePopup); // добавляем слушатель на кнопку редактирования профиля
