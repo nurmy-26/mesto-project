@@ -1,16 +1,14 @@
 import {profilePopup, cardPopup, avatarPopup, profileName, profileDetail,
         inputName, inputDetail, inputCardName, inputLink, openPopup, closePopup,
-        profileAvatar, avatarLink, renderLoading, handleSubmit, request} from './utils.js';
+        profileAvatar, avatarLink, handleSubmit, profileForm, avatarForm, cardForm} from './utils.js';
 import {pasteCard, makeCard} from './card.js';
 import {settings, isValid, switchBtn} from './validate.js';
 import {config, patchProfileInfo, postNewCard, saveAvatar} from './api.js';
 
-const profilePopupInpuList = Array.from(profilePopup.querySelectorAll(settings.inputSelector));
-const profileSubmitBtn = profilePopup.querySelector(settings.submitButtonSelector);
-const cardPopupInpuList = Array.from(cardPopup.querySelectorAll(settings.inputSelector));
-const cardSubmitBtn = cardPopup.querySelector(settings.submitButtonSelector);
-const avatarPopupInpuList = Array.from(avatarPopup.querySelectorAll(settings.inputSelector));
-const avatarSubmitBtn = avatarPopup.querySelector(settings.submitButtonSelector);
+// при 1й загрузке сайта деактивируем кнопки у попапа смены аватара и у создания новой карточки
+// (дальше это будет происходить по ресету)
+switchBtn(avatarForm);
+switchBtn(cardForm);
 
 // ФОРМА РЕДАКТИРОВАНИЯ ПРОФИЛЯ
 // клик на РЕДАКТИРОВАТЬ:
@@ -19,11 +17,12 @@ export function openProfilePopup() {
   inputName.value = profileName.textContent; // при открытии заполняем значение поля указанным на странице
   inputDetail.value = profileDetail.textContent; // при открытии заполняем значение поля указанным на странице
 
+  const profilePopupInpuList = Array.from(profilePopup.querySelectorAll(settings.inputSelector));
   // при открытии состояние полей и кнопки должно проверяться сразу, еще до начала ввода
   // иначе, если закрыть без сохранения с ошибками, значение полей сбросится, но ошибки и неактивная кнопка останутся
   profilePopupInpuList.forEach((input) => {
       isValid(profilePopup, input, settings);
-      switchBtn (profilePopupInpuList, profileSubmitBtn);
+      switchBtn(profileForm);
     })
 }
 
@@ -45,9 +44,6 @@ export function confirmChanges(evt) {
 // клик на ДОБАВИТЬ:
 export function openCardPopup() {
   openPopup(cardPopup); // открываем попап
-
-  // при открытии кнопка должна быть неактивна, чтобы не позволить создать пустую карточку
-  switchBtn (cardPopupInpuList, cardSubmitBtn);
 }
 
 // клик на СОЗДАТЬ (добавление карточки):
@@ -71,9 +67,6 @@ export function addCard(evt) {
 // клик на "редактировать аватарку":
 export function changeAvatarImg() {
   openPopup(avatarPopup); // открываем попап
-
-  // при открытии кнопка должна быть неактивна
-  switchBtn (avatarPopupInpuList, avatarSubmitBtn);
 }
 
 // клик на СОХРАНИТЬ (смена аватара):

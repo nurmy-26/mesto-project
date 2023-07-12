@@ -51,7 +51,9 @@ export function enableBtn(buttonEl) {
 }
 
 // вынести вердикт кнопке
-export function switchBtn(inputList, buttonEl) {
+export function switchBtn(form) {
+  const inputList = Array.from(form.querySelectorAll(settings.inputSelector))
+  const buttonEl = form.querySelector(settings.submitButtonSelector);
   if (hasInvalidInput(inputList)) {
     disableBtn(buttonEl);
   } else {
@@ -62,13 +64,12 @@ export function switchBtn(inputList, buttonEl) {
 // повесить слушатель (проверки на ошибку) на каждое поле формы
 export function setValidListeners(formEl, settings) {
   const inputList = Array.from(formEl.querySelectorAll(settings.inputSelector));
-  const button = formEl.querySelector(settings.submitButtonSelector);
 
   inputList.forEach((input) => {
     input.addEventListener('input', () => {
       isValid(formEl, input, settings);
       // по мере заполнения полей выносим вердикт кнопке:
-      switchBtn (inputList, button);
+      switchBtn(formEl);
     })
   });
 }
