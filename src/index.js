@@ -1,13 +1,13 @@
 import './pages/index.css';
 
 
-import {profileBtn, profileForm, newCardBtn, cardForm, closePopup, popupList, setResetListener,
+import {profileBtn, profileForm, newCardBtn, cardForm, closePopup, popupList,
   profileName, profileDetail, profileAvatar, avatarOverlay, avatarForm} from './components/utils.js';
 import {makeCard, pasteCard} from './components/card.js';
 import {openProfilePopup, confirmChanges, openCardPopup, addCard, changeAvatarImg, confirmAvatar} from './components/modal.js';
 import {enableValidation, settings} from './components/validate.js';
-
 import {config, getProfileInfo, getInitialCards} from './components/api.js';
+
 export let userId; // объявляем id пользователя
 
 // делаем общий запрос на получение инфо профиля и массива начальных карточек
@@ -41,11 +41,9 @@ profileForm.addEventListener('submit', confirmChanges); // добавляем с
 
 newCardBtn.addEventListener('click', openCardPopup); // добавляем слушатель на кнопку добавления карточки
 cardForm.addEventListener('submit', addCard); // добавляем слушатель на форму
-setResetListener(cardForm); // добавляем слушатель ресета
 
 avatarOverlay.addEventListener('click', changeAvatarImg); // добавляем слушатель на аватарку
 avatarForm.addEventListener('submit', confirmAvatar); // добавляем слушатель на форму
-setResetListener(avatarForm); // добавляем слушатель ресета
 
 
 // закрывать при клике по оверлею или крестику

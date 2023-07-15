@@ -17,10 +17,9 @@ export function openImage(name, link) {
 }
 
 // функционал карточки (лайки, удаление, разворот картинки)
-export function addFunctional(item, inpName, inpLink, cardObj) {
+export function addFunctional(inpName, inpLink, cardObj, imageEl, likeNumber, likeBtn, deleteBtn) {
   // навешиваем возможность "лайкать"
-  item.querySelector('.btn_el_like').addEventListener('click', function(evt) {
-    const likeNumber = item.querySelector('.card__like-number');
+  likeBtn.addEventListener('click', function(evt) {
 
 // если лайк уже стоял - убираем его и обновляем инфо на сервере
     if (evt.target.classList.contains('js-active')) {
@@ -46,7 +45,7 @@ export function addFunctional(item, inpName, inpLink, cardObj) {
   });
 
   // навешиваем возможность удалять
-  item.querySelector('.btn_el_delete').addEventListener('click', function(evt) {
+  deleteBtn.addEventListener('click', function(evt) {
     const cardItem = evt.target.closest('.card');
 
     // удаляем карточку с сервера
@@ -60,7 +59,7 @@ export function addFunctional(item, inpName, inpLink, cardObj) {
   });
 
   // навешиваем возможность разворачивать картинку на каждую картинку
-  item.querySelector('.card__image').addEventListener('click', function() {
+  imageEl.addEventListener('click', function() {
     openImage(inpName, inpLink); // используем функцию
   });
 }
@@ -68,14 +67,18 @@ export function addFunctional(item, inpName, inpLink, cardObj) {
 // создание карточки
 export function makeCard(object) { // принимает на вход объект
   const cardCopy = card.cloneNode(true); // клонируем содержимое шаблона
-  // далее заполняем шаблон
+  // сразу находим все нужные элементы для дальнейшего исп-я (в т.ч. в функции addFunctional)
   const imageEl = cardCopy.querySelector('.card__image');
+  const likeNumber = cardCopy.querySelector('.card__like-number');
+  const likeBtn = cardCopy.querySelector('.btn_el_like');
+  const deleteBtn = cardCopy.querySelector('.btn_el_delete');
+  // далее заполняем шаблон
   imageEl.alt = object.name;
   imageEl.src = object.link;
   cardCopy.querySelector('.card__title').textContent = object.name;
   cardCopy.querySelector('.card__like-number').textContent = object.likes.length; // количество лайков
 
-  addFunctional(cardCopy, object.name, object.link, object); // добавляем карточке функционал
+  addFunctional(object.name, object.link, object, imageEl, likeNumber, likeBtn, deleteBtn); // добавляем карточке функционал
 
   // если карточка не моя, убираем иконку удаления
   if (object.owner._id !== userId) {

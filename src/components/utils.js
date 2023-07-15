@@ -1,5 +1,3 @@
-import {settings, disableBtn} from './validate.js'
-
 export const popupList = document.querySelectorAll('.popup'); // все попапы
 export const profilePopup = document.querySelector('.popup_type_profile-info'); // попап редактирования профиля
 export const cardPopup = document.querySelector('.popup_type_new-card'); // попап добавления новой карточки
@@ -38,14 +36,6 @@ function closeByEscape(evt) {
     const popup = document.querySelector('.popup_opened'); // найти открытый попап по соответствующему селектору
     closePopup(popup);                                     // и закрыть его
   }
-}
-
-// повесить на форму слушатель ресета
-export function setResetListener (form) {
-  const button = form.querySelector(settings.submitButtonSelector);
-  form.addEventListener('reset', () => {
-    disableBtn(button);
-  })
 }
 
 // открыть попап

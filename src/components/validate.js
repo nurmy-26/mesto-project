@@ -78,6 +78,14 @@ export function setValidListeners(formEl, settings) {
 export function enableValidation(settings) {
   const formList = Array.from(document.querySelectorAll(settings.formSelector));
   formList.forEach((form) => {
+    // при 1й загрузке сайта функция деактивирует кнопки
+    switchBtn(form);
+    // вешаем слушатели ошибок
     setValidListeners(form, settings);
+    // вешаем на каждую форму слушатель ресета (блокирует кнопки после перезагрузки формы)
+    const button = form.querySelector(settings.submitButtonSelector);
+    form.addEventListener('reset', () => {
+      disableBtn(button);
+    })
   })
 }
