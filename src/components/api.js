@@ -1,11 +1,11 @@
-import {request} from './utils.js'
-export const config = {
-  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-26',
+
+const api = new Api({
+  baseUrl: 'https://nomoreparties.co/v1/cohort-42',
   headers: {
-    authorization: '1d14bffe-bdb7-44a2-9581-cfef3f9374d4', // мой токен
+    authorization: 'c56e30dc-2883-4270-a59e-b2f7bae969c6',
     'Content-Type': 'application/json'
   }
-}
+});
 
 class Api {
   constructor({baseUrl, headers}) {
@@ -72,59 +72,57 @@ class Api {
     });
   }
 
-// лайкнуть карточку на сервере
-likeCard(config, cardObj) {
-  return request(`${config.baseUrl}/cards/likes/${cardObj._id}`, {
-    method: 'PUT',
-    headers: config.headers
-  });
-}
-
-// убрать лайк на сервере
-dislikeCard(config, cardObj) {
-  return request(`${config.baseUrl}/cards/likes/${cardObj._id}`, {
-    method: 'DELETE',
-    headers: config.headers
-  });
-}
-
-// сохранить аватар на сервере
-saveAvatar(config, avatarLink) {
-  return request(`${config.baseUrl}/users/me/avatar`, {
-    method: 'PATCH',
-    headers: config.headers,
-    body: JSON.stringify({
-      avatar: avatarLink
-    })
-  });
-}
-
-
-
-
-}
-
-const api = new Api({
-  baseUrl: 'https://nomoreparties.co/v1/cohort-42',
-  headers: {
-    authorization: 'c56e30dc-2883-4270-a59e-b2f7bae969c6',
-    'Content-Type': 'application/json'
+  // лайкнуть карточку на сервере
+  likeCard(cardObj) {
+    return request(`${this._baseUrl}/cards/likes/${cardObj._id}`, {
+      method: 'PUT',
+      headers: this._headers
+    });
   }
-});
 
-// загрузка информации о профиле с сервера
+  // убрать лайк на сервере
+  dislikeCard(cardObj) {
+    return request(`${this._baseUrl}/cards/likes/${cardObj._id}`, {
+      method: 'DELETE',
+      headers: this._headers
+    });
+  }
+
+  // сохранить аватар на сервере
+  saveAvatar(avatarLink) {
+    return request(`${this._baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar: avatarLink
+      })
+    });
+  }
+}
+
+// import {request} from './utils.js'
+// export const config = {
+//   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-26',
+//   headers: {
+//     authorization: '1d14bffe-bdb7-44a2-9581-cfef3f9374d4', // мой токен
+//     'Content-Type': 'application/json'
+//   }
+// }
+
+
+/*// загрузка информации о профиле с сервера
 export function getProfileInfo(config) {
   return request(`${config.baseUrl}/users/me`, {
     headers: config.headers
   })
 }
 
-// получение начальных карточек
-// export function getInitialCards(config) {
-//   return request(`${config.baseUrl}/cards`, {
-//     headers: config.headers
-//   })
-// }
+//получение начальных карточек
+export function getInitialCards(config) {
+  return request(`${config.baseUrl}/cards`, {
+    headers: config.headers
+  })
+}
 
 // отредактировать данные профиля (имя и инфо) на сервере
 export function patchProfileInfo(config, profileName, profileAbout) {
@@ -192,7 +190,7 @@ export function getCardInfo(config, cardObj) {
     headers: config.headers
   })
 }
-
+*/
 /*
 getProfileInfo(config)
   .then((res) => {
