@@ -8,7 +8,7 @@ class PopupWithImage extends Popup {
 
   }
 
-  openPopup( {link, name} ) {
+  openPopup( {name, link} ) {
     this._imageSelector.src = link;
     this._imageSelector.alt = name;
     this._descriptionSelector.textContent = name;

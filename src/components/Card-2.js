@@ -1,5 +1,5 @@
 class Card {
-  constructor(object,selectorTemplate){
+  constructor(object, selectorTemplate){
     this._object = object;
     this._selectorTemplate = selectorTemplate;
   }
@@ -61,9 +61,14 @@ class Card {
 
     // навешиваем возможность разворачивать картинку на каждую картинку
     imageEl.addEventListener('click', function() {
-      openImage(inpName, inpLink); // используем функцию
+      // openImage(inpName, inpLink);
+      // используем функцию
+      const imgPopup = new PopupWithImage('popup_type_image-open');
+      imgPopup.openPopup(this._object);
     });
   }
+
+
   makeCard() { // принимает на вход объект
     const cardCopy = this._getElement(); // клонируем содержимое шаблона
     // сразу находим все нужные элементы для дальнейшего исп-я (в т.ч. в функции addFunctional)
