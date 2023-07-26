@@ -2,7 +2,7 @@ import {userId} from '../index.js';
 import {card, gallery, imageFull, descriptionFull, imagePopup, openPopup} from './utils.js';
 import {config, deleteCard, likeCard, dislikeCard} from './api.js';
 
-// функция "вставить карточку" в начало галереи
+// // функция "вставить карточку" в начало галереи
 export function pasteCard(card) {
   gallery.prepend(card);
 }
@@ -16,7 +16,7 @@ export function openImage(name, link) {
   openPopup(imagePopup); // и показываем попап с заполненным содержимым
 }
 
-// функционал карточки (лайки, удаление, разворот картинки)
+// // функционал карточки (лайки, удаление, разворот картинки)
 export function addFunctional(inpName, inpLink, cardObj, imageEl, likeNumber, likeBtn, deleteBtn) {
   // навешиваем возможность "лайкать"
   likeBtn.addEventListener('click', function(evt) {
