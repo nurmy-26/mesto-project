@@ -1,8 +1,8 @@
 
 const api = new Api({
-  baseUrl: 'https://nomoreparties.co/v1/cohort-42',
+  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-26',
   headers: {
-    authorization: 'c56e30dc-2883-4270-a59e-b2f7bae969c6',
+    authorization: '1d14bffe-bdb7-44a2-9581-cfef3f9374d4', // мой токен
     'Content-Type': 'application/json'
   }
 });
@@ -28,21 +28,21 @@ class Api {
 
   // получение начальных карточек
   getInitialCards() {
-    return request(`${this._baseUrl}/cards`, {
+    return this._request(`${this._baseUrl}/cards`, {
       headers: this._headers
     })
   }
 
   // загрузка информации о профиле с сервера
   getProfileInfo() {
-    return request(`${this._baseUrl}/users/me`, {
+    return this._request(`${this._baseUrl}/users/me`, {
       headers: this._headers
     })
   }
 
   // отредактировать данные профиля (имя и инфо) на сервере
   patchProfileInfo(profileName, profileAbout) {
-    return request(`${this._baseUrl}/users/me`, {
+    return this._request(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
@@ -54,7 +54,7 @@ class Api {
 
   // добавить новую карточку на сервер
   postNewCard(cardName, cardLink) {
-    return request(`${this._baseUrl}/cards`, {
+    return this._request(`${this._baseUrl}/cards`, {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify({
@@ -66,7 +66,7 @@ class Api {
 
   // удалить карточку с сервера
   deleteCard(cardObj) {
-    return request(`${this._baseUrl}/cards/${cardObj._id}`, {
+    return this._request(`${this._baseUrl}/cards/${cardObj._id}`, {
       method: 'DELETE',
       headers: this._headers
     });
@@ -74,7 +74,7 @@ class Api {
 
   // лайкнуть карточку на сервере
   likeCard(cardObj) {
-    return request(`${this._baseUrl}/cards/likes/${cardObj._id}`, {
+    return this._request(`${this._baseUrl}/cards/likes/${cardObj._id}`, {
       method: 'PUT',
       headers: this._headers
     });
@@ -82,7 +82,7 @@ class Api {
 
   // убрать лайк на сервере
   dislikeCard(cardObj) {
-    return request(`${this._baseUrl}/cards/likes/${cardObj._id}`, {
+    return this._request(`${this._baseUrl}/cards/likes/${cardObj._id}`, {
       method: 'DELETE',
       headers: this._headers
     });
@@ -90,7 +90,7 @@ class Api {
 
   // сохранить аватар на сервере
   saveAvatar(avatarLink) {
-    return request(`${this._baseUrl}/users/me/avatar`, {
+    return this._request(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({

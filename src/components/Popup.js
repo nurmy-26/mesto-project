@@ -14,9 +14,9 @@ class Popup{
   }
 
   _closeByEscape(evt) {
-    if (evt.key === 'Escape') this.closePopup();
-      // найти открытый попап по соответствующему селектору и закрыть его ?
-      // const popup = document.querypopupSelector('.popup_opened');
+    if (evt.key === 'Escape') {
+      this.closePopup();
+    }
   }
 
   // закрывать при клике по оверлею или крестику
