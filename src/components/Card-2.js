@@ -1,4 +1,5 @@
-class Card {
+import { userId } from '../../src/index.js'
+export default class Card {
   // liker, deleter, imageOpener - функции-колбеки, используют запросы (т.е. методы)  класса api (объявим в index.js)
   constructor(object, selectorTemplate, liker, deleter, imageOpener){
     // из object нам понадобятся: _id, name, link, likes, owner._id
@@ -20,7 +21,7 @@ class Card {
     return cardElement;
   }
 
-  detId() {
+  getId() { // мб пригодится если делать подтверждение удаления
     // id карточки
     return this._object._id;
   }
@@ -32,7 +33,7 @@ class Card {
 
   _countLikes() {
     // меняет счетчик лайков в разметке и отвечает за покраску сердечка
-    this._cardCopy.querySelector('.card__like-number').textContent = this._object.likes.length;
+    this._likeNumber.textContent = this._object.likes.length;
 
     if (this._isLiked()) {
       this._likeBtn.classList.add('js-active');
@@ -50,12 +51,9 @@ class Card {
 
   _addFunctional() {
     // используем колбеки (будем передавать запросы Api)
-    this._likeBtn.addEventListener('click', () => this._liker(this));
-    this._deleteBtn.addEventListener('click', () => this._deleter(this));
-    this._imageEl.addEventListener('click', () => this._imageOpener({
-      name: this._name,
-      link: this._link
-    }));
+    this._likeBtn.addEventListener('click', (evt) => this._liker(this._object, evt, this._likeNumber));
+    this._deleteBtn.addEventListener('click', () => this._deleter(this._object, this._deleteBtn));
+    this._imageEl.addEventListener('click', () => this._imageOpener(this._object));
   }
 
 // создает и возвращает полностью готовую карточку

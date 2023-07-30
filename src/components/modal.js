@@ -3,7 +3,7 @@ import {profilePopup, cardPopup, avatarPopup, profileName, profileDetail,
         profileAvatar, avatarLink, handleSubmit, profileForm} from './utils.js';
 import {pasteCard, makeCard} from './card.js';
 import {settings, isValid, switchBtn} from './validate.js';
-import {config, patchProfileInfo, postNewCard, saveAvatar} from './api.js';
+import {config, patchProfileInfo, postNewCard, saveAvatar} from './Api.js';
 
 // ФОРМА РЕДАКТИРОВАНИЯ ПРОФИЛЯ
 // клик на РЕДАКТИРОВАТЬ:

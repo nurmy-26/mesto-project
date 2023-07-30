@@ -1,13 +1,4 @@
-
-const api = new Api({
-  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-26',
-  headers: {
-    authorization: '1d14bffe-bdb7-44a2-9581-cfef3f9374d4', // мой токен
-    'Content-Type': 'application/json'
-  }
-});
-
-class Api {
+export default class Api {
   constructor({baseUrl, headers}) {
     this._baseUrl = baseUrl;
     this._headers = headers;

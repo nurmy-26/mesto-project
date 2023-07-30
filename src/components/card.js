@@ -1,6 +1,6 @@
 import {userId} from '../index.js';
 import {card, gallery, imageFull, descriptionFull, imagePopup, openPopup} from './utils.js';
-import {config, deleteCard, likeCard, dislikeCard} from './api.js';
+import {config, deleteCard, likeCard, dislikeCard} from './Api.js';
 
 // // функция "вставить карточку" в начало галереи
 export function pasteCard(card) {

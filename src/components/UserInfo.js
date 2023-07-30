@@ -1,17 +1,24 @@
-class UserInfo{
-  constructor({name, about}){
-    this._name = document.querySelector(name);
-    this._about = document.querySelector(about);
+export default class UserInfo{
+  // принимает элементы (!) с селекторами (имя, подпись, аватар)
+  constructor(name, about, avatar) {
+    this._name = name;
+    this._about = about;
+    this._avatar = avatar;
   }
 
+  // возвращает объект с данными пользователя
   getUserInfo(){
-     return{
+     return {
          name: this._name.textContent,
-         about:  this._about.textContent
+         about:  this._about.textContent,
+         avatar: this._avatar.src
      }
   }
-  setUserInfo({ name, about }) {
-     this._name.textContent = name;
-     this._about.textContent = about;
+
+  // обновить инфо на странице (принимает новые данные пользователя, которые нужно получить с сервера)
+  setUserInfo(data) {
+     this._name.textContent = data.name;
+     this._about.textContent = data.about;
+     this._avatar.src = data.avatar
    }
  }

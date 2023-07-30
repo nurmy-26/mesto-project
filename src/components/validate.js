@@ -1,13 +1,4 @@
-// settings - это объект, который будем передавать в первом параметре
-export const settings = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.btn_el_save',
-  inputErrorClass: 'popup__input_invalid',
-  errorClass: '.popup__error_type_'
-}
-
-class FormValidator {
+export default class FormValidator {
   constructor({formSelector, inputSelector, submitButtonSelector, inputErrorClass, errorClass}, formElement) {
     this._formSelector = formSelector;
     this._inputSelector = inputSelector;
@@ -45,9 +36,9 @@ _isValid(inputEl) {
   }
 
   if (!inputEl.validity.valid) {
-    showError(inputEl);
+    this._showError(inputEl);
   } else {
-    hideError(inputEl);
+    this._hideError(inputEl);
   }
 }
 
@@ -99,6 +90,7 @@ enableValidation() {
 
 }
 
+/*
 // для каждой проверяемой формы создавать экземпляр класса
 
 // проверка всех форм на валидность
@@ -116,7 +108,7 @@ enableValidation() {
     // вешаем на каждую форму слушатель ресета (блокирует кнопки после перезагрузки формы)
     // ...
   })
-
+*/
 /*
 export const settings = {
   formSelector: '.popup__form',

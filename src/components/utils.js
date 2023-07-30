@@ -30,6 +30,17 @@ export const cardTemplate = document.querySelector('#card').content; // выбр
 export const card = cardTemplate.querySelector('.card'); // шаблон карточки
 export const gallery = document.querySelector('.gallery');
 
+// settings - это объект, который будем передавать в первом параметре
+export const settings = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.btn_el_save',
+  inputErrorClass: 'popup__input_invalid',
+  errorClass: '.popup__error_type_'
+}
+
+/*
+
 // закрыть попап при нажатии на Esc (для вызова в обработчиках)
 function closeByEscape(evt) {
   if (evt.key === 'Escape') {
@@ -62,8 +73,9 @@ export function checkResponse(res) {
 // функция для универсального запроса с проверкой ответа
 export function request(url, options) {
   return fetch(url, options).then(checkResponse)
-}
+} */
 
+//#region handleSubmit
 // отображение надписи "Сохранение..." пока идет загрузка (3 и 4 аргументы необязательные)
 export function renderLoading(isLoading, button, defaultText='Сохранить', loadingText='Сохранение...') {
   if (isLoading) {
@@ -97,4 +109,4 @@ export function handleSubmit(request, evt, loadingText = 'Сохранение..
       renderLoading(false, submitButton, initialText);
     });
 }
-
+//#endregion

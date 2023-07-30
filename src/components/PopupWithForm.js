@@ -1,9 +1,11 @@
-class PopupWithForm extends Popup {
+import Popup from './Popup'
+
+export default class PopupWithForm extends Popup {
   constructor(popupSelector, submitForm) {
     super(popupSelector); // селектор попапа
-    this._submitForm = submitForm; // колбек-функция
+    this._submitForm = submitForm; // колбек-функция handleSubmit(makeRequest, evt)
 
-    this._formElement = document.querySelector(popupSelector).content.querySelector('form');
+    this._formElement = this._container.querySelector('.popup__form');
     this._buttonEl = this._formElement.querySelector('.btn_el_save');
   }
 
@@ -24,8 +26,7 @@ class PopupWithForm extends Popup {
     super.setEventListeners();
     // используем переданный колбек сабмита формы _submitForm
     this._formElement.addEventListener('submit', (evt) => {
-      evt.preventDefault();
-      this._submitForm(this._getInputValues());
+      this._submitForm(evt);
     });
   }
 
