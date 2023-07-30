@@ -5,9 +5,9 @@ import {settings, profileBtn, newCardBtn, profileAvatar, avatarOverlay, profileN
   avatarForm, avatarLink, gallery, handleSubmit} from './components/utils.js';
 
 import Api from './components/Api.js';
-import Card from './components/Card-2';
+import Card from './components/Card';
 import Section from './components/Section';
-import FormValidator from './components/validate.js';
+import FormValidator from './components/Formvalidate.js';
 import PopupWithForm from './components/PopupWithForm';
 import PopupWithImage from './components/PopupWithImage';
 import UserInfo from './components/UserInfo';
@@ -107,68 +107,102 @@ const deleter = (item, deleteBtn) => {
     })
 }
 
-/*
-import './pages/index.css';
+// реквест обновления профиля
+function makeProfileRequest() {
+  return api.patchProfileInfo(inputName.value, inputDetail.value) // сохраняем введенные данные на сервере
+    .then((data) => { // в случае удачного запроса:
+      profileName.textContent = data.name; // меняем имя на введенное
+      profileDetail.textContent = data.about; // меняем подпись на введенную
+      profilePopup.closeAndReset(); // закрываем попап
+    });
+}
 
+// колбэк-функция для формы редактирования профиля
+const submitProfile = (evt) => handleSubmit(makeProfileRequest, evt);
 
-import {profileBtn, profileForm, newCardBtn, cardForm, closePopup, popupList,
-  profileName, profileDetail, profileAvatar, avatarOverlay, avatarForm} from './components/utils.js';
-import {makeCard, pasteCard} from './components/card.js';
-import {openProfilePopup, confirmChanges, openCardPopup, addCard, changeAvatarImg, confirmAvatar} from './components/modal.js';
-import {enableValidation, settings} from './components/validate.js';
-import {config, getProfileInfo, getInitialCards} from './components/Api.js';
-
-export let userId; // объявляем id пользователя
-
-// делаем общий запрос на получение инфо профиля и массива начальных карточек
-Promise.all([getProfileInfo(config), getInitialCards(config)])
-  .then (values => {
-
-    const userData = values[0]; // первым получаем объект - данные профиля
-    const cards = values[1]; // вторым получаем массив карточек с сервера
-
-    profileName.textContent = userData.name; // меняем имя на присланное с сервера
-    profileDetail.textContent = userData.about; // меняем подпись на присланную с сервера
-    profileAvatar.src = userData.avatar; // меняем аватар
-    userId = userData._id; // присваиваем id пользователя
-
-    // прогоняем массив полученных карточек через функцию создания
-    cards.forEach((item) => {
-      const newCard = makeCard(item); // параметры - ключи name и link текущего элемента массива
-
-      pasteCard(newCard);
-      });
-
-    })
-    .catch(err => {
-      console.log(err);
-    })
-
-
-profileBtn.addEventListener('click', openProfilePopup); // добавляем слушатель на кнопку редактирования профиля
-profileForm.addEventListener('submit', confirmChanges); // добавляем слушатель на форму
-
-
-newCardBtn.addEventListener('click', openCardPopup); // добавляем слушатель на кнопку добавления карточки
-cardForm.addEventListener('submit', addCard); // добавляем слушатель на форму
-
-avatarOverlay.addEventListener('click', changeAvatarImg); // добавляем слушатель на аватарку
-avatarForm.addEventListener('submit', confirmAvatar); // добавляем слушатель на форму
-
-
-// закрывать при клике по оверлею или крестику
-// mousedown - чтобы не закрывалось при выделении текста и случайном отпускании за границей попапа
-popupList.forEach((popup) => {
-  popup.addEventListener('mousedown', (evt) => {
-    if (evt.target.classList.contains('popup_opened')) {
-      closePopup(popup);
-    }
-    if (evt.target.classList.contains('btn_el_close')) {
-      closePopup(popup);
-    }
+// РЕДАКТИРОВАНИЕ ПРОФИЛЯ
+// попап редактирования профиля
+const profilePopup = new PopupWithForm('.popup_type_profile-info', (evt) => {
+  // передаем колбэк-функцию
+  submitProfile(evt);
   });
-});
+profilePopup.setEventListeners();
 
-// запуск проверки всех форм и полей в них
-enableValidation(settings);
-*/
+// функция открывающая попап
+const profilePopupOpener = (popup) => {
+  popup.openPopup();
+}
+
+profileBtn.addEventListener('click', () => {
+  profilePopupOpener(profilePopup); // открываем попап с использованием функции
+  inputName.value = profileName.textContent; // при открытии заполняем значение поля указанным на странице
+  inputDetail.value = profileDetail.textContent; // при открытии заполняем значение поля указанным на странице
+
+  profileFormValidator.enableValidation(); // при открытии нужно проверить поля еще до начала ввода (чтоб кнопка была доступна)
+}); // по клику открывается попап
+
+
+
+
+// реквест добавления новой карточки
+function makeCardRequest() {
+  const cardObj = {name: inputCardName.value, link: inputLink.value};
+
+  return api.postNewCard(cardObj.name, cardObj.link) // добавляем карточку к другим на сервере
+      .then((obj) => { // в случае удачного запроса:
+        cardsList.addItem(makeNewCard(obj)); // для использования с функцией
+        cardPopup.closeAndReset(); // закрываем попап
+      })
+}
+
+// колбэк-функция для формы редактирования профиля
+const submitNewCard = (evt) => handleSubmit(makeCardRequest, evt);
+
+// ДОБАВЛЕНИЕ КАРТОЧКИ
+// попап добавления карточки
+const cardPopup = new PopupWithForm('.popup_type_new-card', (evt) => {
+  // передаем колбэк-функцию
+  submitNewCard(evt);
+  });
+cardPopup.setEventListeners();
+
+newCardBtn.addEventListener('click', () => {
+  profilePopupOpener(cardPopup)
+}); // по клику открывается попап
+
+
+
+// реквест смены аватара
+function makeAvatarRequest() {
+  return api.saveAvatar(avatarLink.value) // отправляем обновленную информацию на сервер
+    .then((data) => { // в случае удачного запроса:
+      profileAvatar.src = data.avatar; // меняем путь к картинке на введенный
+      avatarPopup.closeAndReset(); // закрываем попап
+    })
+}
+
+// колбэк-функция для формы смены аватара
+const submitAvatar = (evt) => handleSubmit(makeAvatarRequest, evt);
+
+// СМЕНА АВАТАРА
+// попап смены аватара
+const avatarPopup = new PopupWithForm('.popup_type_change-avatar', (evt) => {
+  // передаем колбэк-функцию
+  submitAvatar(evt);
+  });
+avatarPopup.setEventListeners();
+
+avatarOverlay.addEventListener('click', () => {
+  profilePopupOpener(avatarPopup)
+}); // по клику открывается попап
+
+
+// включаем валидацию форм 
+const profileFormValidator = new FormValidator(settings, profileForm);
+profileFormValidator.enableValidation();
+
+const avatarFormValidator = new FormValidator(settings, avatarForm);
+avatarFormValidator.enableValidation();
+
+const cardFormValidator = new FormValidator(settings, cardForm);
+cardFormValidator.enableValidation();

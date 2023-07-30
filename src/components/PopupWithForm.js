@@ -31,7 +31,7 @@ export default class PopupWithForm extends Popup {
   }
 
   // перегрузка родительского метода - при закрытии попапа форма должна ещё и сбрасываться
-  closePopup() {
+  closeAndReset() {
     super.closePopup();
     this._formElement.reset();
   }

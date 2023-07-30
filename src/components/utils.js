@@ -39,42 +39,6 @@ export const settings = {
   errorClass: '.popup__error_type_'
 }
 
-/*
-
-// закрыть попап при нажатии на Esc (для вызова в обработчиках)
-function closeByEscape(evt) {
-  if (evt.key === 'Escape') {
-    const popup = document.querySelector('.popup_opened'); // найти открытый попап по соответствующему селектору
-    closePopup(popup);                                     // и закрыть его
-  }
-}
-
-// открыть попап
-export function openPopup(popupElement) {
-  popupElement.classList.add('popup_opened');
-  document.addEventListener('keydown', closeByEscape); // повесить обработчик Esc
-}
-
-// закрыть попап
-export function closePopup(popupElement) {
-  popupElement.classList.remove('popup_opened');
-
-  document.removeEventListener('keydown', closeByEscape); // убрать обработчик Esc
-}
-
-// универсальная функция проверки ответа от сервера
-export function checkResponse(res) {
-  if (res.ok) {
-    return res.json();
-  }
-  return Promise.reject(`Ошибка: ${res.status}`);
-}
-
-// функция для универсального запроса с проверкой ответа
-export function request(url, options) {
-  return fetch(url, options).then(checkResponse)
-} */
-
 //#region handleSubmit
 // отображение надписи "Сохранение..." пока идет загрузка (3 и 4 аргументы необязательные)
 export function renderLoading(isLoading, button, defaultText='Сохранить', loadingText='Сохранение...') {
