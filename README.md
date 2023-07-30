@@ -1,5 +1,6 @@
 # [Проект: Место](https://nurmy-26.github.io/mesto-project/)
-*Парное программирование (рефакторинг в стиль ООП) с https://github.com/EkaterinaRomachenko ( ekaterinaromachenko@yandex.ru )*
+*Парное программирование (рефакторинг в стиль ООП) с https://github.com/EkaterinaRomachenko 
+ekaterinaromachenko@yandex.ru *
 
 *Статус: в разработке*
 
