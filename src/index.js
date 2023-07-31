@@ -7,7 +7,7 @@ import {settings, profileBtn, newCardBtn, profileAvatar, avatarOverlay, profileN
 import Api from './components/Api.js';
 import Card from './components/Card';
 import Section from './components/Section';
-import FormValidator from './components/Formvalidate.js';
+import FormValidator from './components/FormValidator.js';
 import PopupWithForm from './components/PopupWithForm';
 import PopupWithImage from './components/PopupWithImage';
 import UserInfo from './components/UserInfo';
@@ -28,7 +28,7 @@ const userInfo = new UserInfo(profileName, profileDetail, profileAvatar);
 
 // ф-я создания полностью функционирующей и готовой к вставке в галерею карточки
 function makeNewCard(item) {
-  const card = new Card(item, '#card', liker, deleter, imageOpener, userId);
+  const card = new Card(item, '#card', liker, deleter, openerImage, userId);
   return card.makeCard();
 }
 
@@ -62,7 +62,7 @@ const imagePopup = new PopupWithImage('.popup_type_image-open');
 imagePopup.setEventListeners(); // метод родительского Popup
 
 // ф-я, разворачиваящая картинку
-const imageOpener = (item) => {
+const openerImage = (item) => {
   imagePopup.openPopup(item);
 }
 
@@ -129,12 +129,12 @@ const profilePopup = new PopupWithForm('.popup_type_profile-info', (evt) => {
 profilePopup.setEventListeners();
 
 // функция открывающая попап
-const profilePopupOpener = (popup) => {
+const openerPopup = (popup) => {
   popup.openPopup();
 }
 
 profileBtn.addEventListener('click', () => {
-  profilePopupOpener(profilePopup); // открываем попап с использованием функции
+  openerPopup(profilePopup); // открываем попап с использованием функции
   inputName.value = profileName.textContent; // при открытии заполняем значение поля указанным на странице
   inputDetail.value = profileDetail.textContent; // при открытии заполняем значение поля указанным на странице
 
@@ -167,7 +167,7 @@ const cardPopup = new PopupWithForm('.popup_type_new-card', (evt) => {
 cardPopup.setEventListeners();
 
 newCardBtn.addEventListener('click', () => {
-  profilePopupOpener(cardPopup)
+  openerPopup(cardPopup)
 }); // по клику открывается попап
 
 
@@ -193,7 +193,7 @@ const avatarPopup = new PopupWithForm('.popup_type_change-avatar', (evt) => {
 avatarPopup.setEventListeners();
 
 avatarOverlay.addEventListener('click', () => {
-  profilePopupOpener(avatarPopup)
+  openerPopup(avatarPopup)
 }); // по клику открывается попап
 
 

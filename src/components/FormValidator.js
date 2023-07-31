@@ -85,8 +85,12 @@ enableValidation() {
     this._formElement.addEventListener('reset', () => {
       this._disableBtn();
     })
+    this.resetValidate()
 }
-
+ // Метод сброса валидации форм
+ resetValidate() {
+   this._inputList.forEach((inputItem) => { this._hideError(inputItem)})
+ }
 }
 
 
