@@ -70,7 +70,7 @@ const imageOpener = (item) => {
 const liker = (item, evt, likeNumber) => {
   // если лайк уже стоял - убираем его и обновляем инфо на сервере
   if (evt.target.classList.contains('js-active')) {
-    // вместо item нужно item.getId() ?? (проверить и заменить в api !!)
+
     api.dislikeCard(item)
       .then((data) => {
         // ? выделить в метод класса и использовать метод
@@ -98,7 +98,7 @@ const deleter = (item, deleteBtn) => {
   const cardItem = deleteBtn.closest('.card');
 
   // удаляем карточку с сервера
-  api.deleteCard(item) // вместо item мб нужен id карточки (проверить) !!
+  api.deleteCard(item)
     .then(() => {
       cardItem.remove();
     })
@@ -197,7 +197,7 @@ avatarOverlay.addEventListener('click', () => {
 }); // по клику открывается попап
 
 
-// включаем валидацию форм 
+// включаем валидацию форм
 const profileFormValidator = new FormValidator(settings, profileForm);
 profileFormValidator.enableValidation();
 

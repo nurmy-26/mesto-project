@@ -1,6 +1,6 @@
 .btn_el_edit {
   grid-area: edit;
-  min-width: 24px; /* иначе сжимается текстом*/
+  width: 24px; /* иначе сжимается текстом*/
   height: 24px;
   border: 1px solid #fff;
 
@@ -9,7 +9,7 @@
 
 @media (max-width: 500px) {
   .btn_el_edit {
-    min-width: 18px;
+    width: 18px;
     height: 18px;
     background-size: 7.5px;
   }
