@@ -13,7 +13,9 @@ import PopupWithImage from './components/PopupWithImage';
 import UserInfo from './components/UserInfo';
 
 
-export let userId; // объявляем id пользователя
+let userId; // объявляем id пользователя
+let cardId; // объявляем id карточки
+let cardForDeleting; // переменная для сохранения текущей card (напрямую не передается в makeDeleteRequest)
 
 const api = new Api({
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-26',
@@ -29,7 +31,7 @@ const userInfo = new UserInfo(profileName, profileDetail, profileAvatar);
 
 // ф-я создания полностью функционирующей и готовой к вставке в галерею карточки
 function makeNewCard(item) {
-  const card = new Card(item, '#card', liker, deleter, imageOpener, userId);
+  const card = new Card(item, '#card', liker, openDeletePopup, imageOpener, userId);
   return card.makeCard();
 }
 
@@ -92,7 +94,8 @@ const liker = (item, card) => {
 }
 
 // ф-я, удаляющая карточку
-const deleter = (item, card) => {
+/*const deleter = (item, card) => {
+
 
   // удаляем карточку с сервера
   api.deleteCard(item)
@@ -102,6 +105,13 @@ const deleter = (item, card) => {
     .catch((err) => {
       console.log(err);
     })
+}*/
+
+// ф-я, открывающая попап подтверждения удаления
+const openDeletePopup = (item, card) => {
+  deletePopup.openPopup(); // открыть попап
+  cardId = item._id; // сохраняем id открытой карточки
+  cardForDeleting = card; // сохраняем ссылку на экземпляр открытой карточки
 }
 
 //реквест обновления профиля
@@ -143,7 +153,6 @@ profileBtn.addEventListener('click', () => {
 
 
 
-
 // реквест добавления новой карточки
 function makeCardRequest() {
   return api.postNewCard(cardPopup.getInputValues()['card-name'], cardPopup.getInputValues()['card-link']) // добавляем карточку к другим на сервере
@@ -172,6 +181,7 @@ newCardBtn.addEventListener('click', () => {
 }); // по клику открывается попап
 
 
+
 // реквест смены аватара
 function makeAvatarRequest() {
   return api.saveAvatar(avatarPopup.getInputValues()['avatar-link']) // отправляем обновленную информацию на сервер
@@ -195,6 +205,33 @@ avatarPopup.setEventListeners();
 avatarOverlay.addEventListener('click', () => {
   profilePopupOpener(avatarPopup)
 }); // по клику открывается попап
+
+
+
+// реквест удаления карточки
+function makeDeleteRequest() {
+  console.log(cardForDeleting)
+  return api.deleteCard(cardId) // отправляем запрос на удаление, используя переданный при открытии попапа id карточки
+    .then(() => {
+      cardForDeleting.delete(); // после положительного запроса серверу - удалить из разметки
+      deletePopup.closePopup(); // закрываем попап
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+}
+
+// колбэк-функция для формы удаления карточки
+const submitDelete = (evt, card) => handleSubmit(makeDeleteRequest, evt);
+
+// ПОДТВЕРЖДЕНИЕ УДАЛЕНИЯ
+// попап подтверждения удаления
+const deletePopup = new PopupWithForm('.popup_type_submit-delete', (evt) => {
+  // передаем колбэк-функцию
+  submitDelete(evt);
+  });
+  deletePopup.setEventListeners();
+
 
 
 // включаем валидацию форм

@@ -56,8 +56,8 @@ export default class Api {
   }
 
   // удалить карточку с сервера
-  deleteCard(cardObj) {
-    return this._request(`${this._baseUrl}/cards/${cardObj._id}`, {
+  deleteCard(cardId) {
+    return this._request(`${this._baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
       headers: this._headers
     });

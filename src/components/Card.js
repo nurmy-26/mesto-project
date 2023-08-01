@@ -1,10 +1,10 @@
 export default class Card {
   // liker, deleter, imageOpener - функции-колбеки, используют запросы (т.е. методы) класса api
-  constructor(object, selectorTemplate, liker, deleter, imageOpener, userId){
+  constructor(object, selectorTemplate, liker, openDeletePopup, imageOpener, userId){
     this._object = object;
     this._selectorTemplate = selectorTemplate;
     this._liker = liker;
-    this._deleter = deleter;
+    this._openDeletePopup = openDeletePopup;
     this._imageOpener = imageOpener;
     this._userId = userId;
   }
@@ -58,7 +58,8 @@ export default class Card {
   _addFunctional() {
     // используем колбеки (будем передавать запросы Api)
     this._likeBtn.addEventListener('click', () => this._liker(this._object, this));
-    this._deleteBtn.addEventListener('click', () => this._deleter(this._object, this));
+    // this._deleteBtn.addEventListener('click', () => this._deleter(this._object, this));
+    this._deleteBtn.addEventListener('click', () => this._openDeletePopup(this._object, this));
     this._imageEl.addEventListener('click', () => this._imageOpener(this._object));
   }
 
