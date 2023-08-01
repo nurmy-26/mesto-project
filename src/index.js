@@ -12,6 +12,7 @@ import PopupWithForm from './components/PopupWithForm';
 import PopupWithImage from './components/PopupWithImage';
 import UserInfo from './components/UserInfo';
 
+
 export let userId; // объявляем id пользователя
 
 const api = new Api({
@@ -96,7 +97,6 @@ const liker = (item, evt, likeNumber) => {
 // ф-я, удаляющая карточку
 const deleter = (item, deleteBtn) => {
   const cardItem = deleteBtn.closest('.card');
-
   // удаляем карточку с сервера
   api.deleteCard(item)
     .then(() => {
@@ -107,14 +107,18 @@ const deleter = (item, deleteBtn) => {
     })
 }
 
-// реквест обновления профиля
+//реквест обновления профиля
 function makeProfileRequest() {
   return api.patchProfileInfo(inputName.value, inputDetail.value) // сохраняем введенные данные на сервере
     .then((data) => { // в случае удачного запроса:
-      profileName.textContent = data.name; // меняем имя на введенное
-      profileDetail.textContent = data.about; // меняем подпись на введенную
-      profilePopup.closeAndReset(); // закрываем попап
-    });
+      // profileName.textContent = data.name; // меняем имя на введенное
+      // profileDetail.textContent = data.about; // меняем подпись на введенную
+      userInfo.setUserInfo(data)
+      profilePopup.closePopup(); // закрываем попап
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 }
 
 // колбэк-функция для формы редактирования профиля
@@ -135,9 +139,11 @@ const openerPopup = (popup) => {
 
 profileBtn.addEventListener('click', () => {
   openerPopup(profilePopup); // открываем попап с использованием функции
-  inputName.value = profileName.textContent; // при открытии заполняем значение поля указанным на странице
-  inputDetail.value = profileDetail.textContent; // при открытии заполняем значение поля указанным на странице
-
+  // inputName.value = profileName.textContent; // при открытии заполняем значение поля указанным на странице
+  // inputDetail.value = profileDetail.textContent; // при открытии заполняем значение поля указанным на странице
+  const dataUserInfo = userInfo.getUserInfo()
+  inputName.value = dataUserInfo.name
+  inputDetail.value = dataUserInfo.about
   profileFormValidator.enableValidation(); // при открытии нужно проверить поля еще до начала ввода (чтоб кнопка была доступна)
 }); // по клику открывается попап
 
@@ -151,7 +157,10 @@ function makeCardRequest() {
   return api.postNewCard(cardObj.name, cardObj.link) // добавляем карточку к другим на сервере
       .then((obj) => { // в случае удачного запроса:
         cardsList.addItem(makeNewCard(obj)); // для использования с функцией
-        cardPopup.closeAndReset(); // закрываем попап
+        cardPopup.closePopup(); // закрываем попап
+      })
+      .catch((err) => {
+        console.log(err);
       })
 }
 
@@ -171,13 +180,16 @@ newCardBtn.addEventListener('click', () => {
 }); // по клику открывается попап
 
 
-
 // реквест смены аватара
 function makeAvatarRequest() {
   return api.saveAvatar(avatarLink.value) // отправляем обновленную информацию на сервер
     .then((data) => { // в случае удачного запроса:
-      profileAvatar.src = data.avatar; // меняем путь к картинке на введенный
-      avatarPopup.closeAndReset(); // закрываем попап
+      // profileAvatar.src = data.avatar; // меняем путь к картинке на введенный
+      userInfo.setUserInfo(data)
+      avatarPopup.closePopup(); // закрываем попап
+    })
+    .catch((err) => {
+      console.log(err);
     })
 }
 

@@ -7,12 +7,11 @@ export default class PopupWithForm extends Popup {
 
     this._formElement = this._container.querySelector('.popup__form');
     this._buttonEl = this._formElement.querySelector('.btn_el_save');
+    this._inputList = Array.from(this._formElement.querySelectorAll('.popup__input'))// массив полей
   }
 
   // собирает данные всех полей формы
-  _getInputValues() {
-
-    this._inputList = Array.from(this._formElement.querySelectorAll('.popup__input')); // массив полей
+  getInputValues() {
     const inputDataList = {}; // объект для сбора данных из полей
     this._inputList.forEach((item) => {
       inputDataList[item.name] = item.value // записываем данные полей в созданный объект (ключ - имя поля)
@@ -31,7 +30,7 @@ export default class PopupWithForm extends Popup {
   }
 
   // перегрузка родительского метода - при закрытии попапа форма должна ещё и сбрасываться
-  closeAndReset() {
+  closePopup() {
     super.closePopup();
     this._formElement.reset();
   }

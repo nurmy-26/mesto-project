@@ -1,22 +1,19 @@
 export default class Popup {
   constructor(popupSelector){
     this._container = document.querySelector(popupSelector);
+    this._closeByEscape = this._closeByEscape.bind(this); // привязываем контекст
   }
 
   openPopup() {
     this._container.classList.add('popup_opened');
     // стрелочная функция нужна, чтоб не потерялся контекст this
-    document.addEventListener('keydown', (evt) => {
-      this._closeByEscape(evt)
-    }); // повесить обработчик Esc
+    document.addEventListener('keydown', this._closeByEscape); // повесить обработчик Esc
   }
 
   closePopup() {
     this._container.classList.remove('popup_opened');
     // стрелочная функция нужна, чтоб не потерялся контекст this
-    document.removeEventListener('keydown', (evt) => {
-      this._closeByEscape(evt)
-    }); // убрать обработчик Esc
+    document.removeEventListener('keydown', this._closeByEscape); // убрать обработчик Esc
   }
 
   _closeByEscape(evt) {
@@ -41,24 +38,3 @@ export default class Popup {
 
 
 
-/*// закрыть попап при нажатии на Esc (для вызова в обработчиках)
-function closeByEscape(evt) {
-  if (evt.key === 'Escape') {
-    const popup = document.querySelector('.popup_opened'); // найти открытый попап по соответствующему селектору
-    closePopup(popup);                                     // и закрыть его
-  }
-}
-
-// открыть попап
-export function openPopup(popupElement) {
-  popupElement.classList.add('popup_opened');
-  document.addEventListener('keydown', closeByEscape); // повесить обработчик Esc
-}
-
-// закрыть попап
-export function closePopup(popupElement) {
-  popupElement.classList.remove('popup_opened');
-
-  document.removeEventListener('keydown', closeByEscape); // убрать обработчик Esc
-}
-*/
