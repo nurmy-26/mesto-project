@@ -23,6 +23,7 @@ _hideError(inputEl) {
   const errorEl = this._formElement.querySelector(`${this._errorClass}${inputEl.name}`);
   inputEl.classList.remove(this._inputErrorClass);
   errorEl.textContent = '';
+  inputEl.setCustomValidity(''); // иначе при проверке полей считается, что ошибка где-то есть (просто ее не видно)
 }
 
   // проверить поле на ошибку
@@ -84,12 +85,15 @@ enableValidation() {
     // вешаем на каждую форму слушатель ресета (блокирует кнопки после перезагрузки формы)
     this._formElement.addEventListener('reset', () => {
       this._disableBtn();
+      this.resetValidate()
     })
-    this.resetValidate()
 }
- // Метод сброса валидации форм
+
+ // удалить ошибку в каждом поле формы
  resetValidate() {
-   this._inputList.forEach((inputItem) => { this._hideError(inputItem)})
+   this._inputList.forEach((input) => {
+    this._hideError(input);
+  })
  }
 }
 

@@ -6,13 +6,11 @@ export default class Popup {
 
   openPopup() {
     this._container.classList.add('popup_opened');
-    // стрелочная функция нужна, чтоб не потерялся контекст this
     document.addEventListener('keydown', this._closeByEscape); // повесить обработчик Esc
   }
 
   closePopup() {
     this._container.classList.remove('popup_opened');
-    // стрелочная функция нужна, чтоб не потерялся контекст this
     document.removeEventListener('keydown', this._closeByEscape); // убрать обработчик Esc
   }
 
@@ -35,6 +33,3 @@ export default class Popup {
     });
   }
 }
-
-
-

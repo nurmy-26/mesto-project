@@ -1,8 +1,8 @@
 import './pages/index.css';
 
-import {settings, profileBtn, newCardBtn, profileAvatar, avatarOverlay, profileName, profileDetail,
-  profileForm, inputName, inputDetail, cardForm, inputCardName, inputLink,
-  avatarForm, avatarLink, gallery, handleSubmit} from './components/utils.js';
+import {settings, profileBtn, newCardBtn, profileAvatar, avatarOverlay,
+  profileName, profileDetail, profileForm, inputName, inputDetail,
+  cardForm, avatarForm, gallery, handleSubmit} from './components/utils.js';
 
 import Api from './components/Api.js';
 import Card from './components/Card';
@@ -29,7 +29,7 @@ const userInfo = new UserInfo(profileName, profileDetail, profileAvatar);
 
 // ф-я создания полностью функционирующей и готовой к вставке в галерею карточки
 function makeNewCard(item) {
-  const card = new Card(item, '#card', liker, deleter, openerImage, userId);
+  const card = new Card(item, '#card', liker, deleter, imageOpener, userId);
   return card.makeCard();
 }
 
@@ -63,20 +63,18 @@ const imagePopup = new PopupWithImage('.popup_type_image-open');
 imagePopup.setEventListeners(); // метод родительского Popup
 
 // ф-я, разворачиваящая картинку
-const openerImage = (item) => {
+const imageOpener = (item) => {
   imagePopup.openPopup(item);
 }
 
 // ф-я, обновляющая счетчик лайков на сервере
-const liker = (item, evt, likeNumber) => {
+const liker = (item, card) => {
   // если лайк уже стоял - убираем его и обновляем инфо на сервере
-  if (evt.target.classList.contains('js-active')) {
+    if (card.isLiked()) {
 
     api.dislikeCard(item)
       .then((data) => {
-        // ? выделить в метод класса и использовать метод
-        evt.target.classList.toggle('js-active'); // меняем цвет сердечка на противоположный
-        likeNumber.textContent = data.likes.length; // обновляем количество лайков
+        card.renewLikes(data.likes) // обновляем в разметке
       })
       .catch((err) => {
         console.log(err);
@@ -85,8 +83,7 @@ const liker = (item, evt, likeNumber) => {
   } else {
     api.likeCard(item)
       .then((data) => {
-        evt.target.classList.toggle('js-active'); // меняем цвет сердечка на противоположный
-        likeNumber.textContent = data.likes.length; // обновляем количество лайков
+        card.renewLikes(data.likes) // обновляем в разметке
       })
       .catch((err) => {
         console.log(err);
@@ -95,12 +92,12 @@ const liker = (item, evt, likeNumber) => {
 }
 
 // ф-я, удаляющая карточку
-const deleter = (item, deleteBtn) => {
-  const cardItem = deleteBtn.closest('.card');
+const deleter = (item, card) => {
+
   // удаляем карточку с сервера
   api.deleteCard(item)
     .then(() => {
-      cardItem.remove();
+      card.delete(); // после положительного запроса серверу - удалить из разметки
     })
     .catch((err) => {
       console.log(err);
@@ -109,11 +106,9 @@ const deleter = (item, deleteBtn) => {
 
 //реквест обновления профиля
 function makeProfileRequest() {
-  return api.patchProfileInfo(inputName.value, inputDetail.value) // сохраняем введенные данные на сервере
+  return api.patchProfileInfo(profilePopup.getInputValues()['profile-name'], profilePopup.getInputValues()['profile-description']) // сохраняем введенные данные на сервере
     .then((data) => { // в случае удачного запроса:
-      // profileName.textContent = data.name; // меняем имя на введенное
-      // profileDetail.textContent = data.about; // меняем подпись на введенную
-      userInfo.setUserInfo(data)
+      userInfo.setUserInfo(data); // меняем имя и подпись на введенные
       profilePopup.closePopup(); // закрываем попап
     })
     .catch((err) => {
@@ -133,18 +128,17 @@ const profilePopup = new PopupWithForm('.popup_type_profile-info', (evt) => {
 profilePopup.setEventListeners();
 
 // функция открывающая попап
-const openerPopup = (popup) => {
+const profilePopupOpener = (popup) => {
   popup.openPopup();
 }
 
 profileBtn.addEventListener('click', () => {
-  openerPopup(profilePopup); // открываем попап с использованием функции
-  // inputName.value = profileName.textContent; // при открытии заполняем значение поля указанным на странице
-  // inputDetail.value = profileDetail.textContent; // при открытии заполняем значение поля указанным на странице
-  const dataUserInfo = userInfo.getUserInfo()
-  inputName.value = dataUserInfo.name
-  inputDetail.value = dataUserInfo.about
-  profileFormValidator.enableValidation(); // при открытии нужно проверить поля еще до начала ввода (чтоб кнопка была доступна)
+  profilePopupOpener(profilePopup); // открываем попап с использованием функции
+  inputName.value = userInfo.getUserInfo().name; // при открытии заполняем значение поля указанным на странице
+  inputDetail.value = userInfo.getUserInfo().about; // при открытии заполняем значение поля указанным на странице
+
+
+  profileFormValidator._switchBtn(); // приходится проверять поля и выносить вердикт кнопке при каждом открытии, так как иначе при закрытии окна (без сабмита) с введенными ошибками визуально ошибки пропадут, но кнопка не будет доступна для нажатия (а новая проверка поля начнется только при событии 'input' или 'reset')
 }); // по клику открывается попап
 
 
@@ -152,9 +146,7 @@ profileBtn.addEventListener('click', () => {
 
 // реквест добавления новой карточки
 function makeCardRequest() {
-  const cardObj = {name: inputCardName.value, link: inputLink.value};
-
-  return api.postNewCard(cardObj.name, cardObj.link) // добавляем карточку к другим на сервере
+  return api.postNewCard(cardPopup.getInputValues()['card-name'], cardPopup.getInputValues()['card-link']) // добавляем карточку к другим на сервере
       .then((obj) => { // в случае удачного запроса:
         cardsList.addItem(makeNewCard(obj)); // для использования с функцией
         cardPopup.closePopup(); // закрываем попап
@@ -176,20 +168,16 @@ const cardPopup = new PopupWithForm('.popup_type_new-card', (evt) => {
 cardPopup.setEventListeners();
 
 newCardBtn.addEventListener('click', () => {
-  openerPopup(cardPopup)
+  profilePopupOpener(cardPopup)
 }); // по клику открывается попап
 
 
 // реквест смены аватара
 function makeAvatarRequest() {
-  return api.saveAvatar(avatarLink.value) // отправляем обновленную информацию на сервер
+  return api.saveAvatar(avatarPopup.getInputValues()['avatar-link']) // отправляем обновленную информацию на сервер
     .then((data) => { // в случае удачного запроса:
-      // profileAvatar.src = data.avatar; // меняем путь к картинке на введенный
-      userInfo.setUserInfo(data)
+      profileAvatar.src = data.avatar; // меняем путь к картинке на введенный
       avatarPopup.closePopup(); // закрываем попап
-    })
-    .catch((err) => {
-      console.log(err);
     })
 }
 
@@ -205,7 +193,7 @@ const avatarPopup = new PopupWithForm('.popup_type_change-avatar', (evt) => {
 avatarPopup.setEventListeners();
 
 avatarOverlay.addEventListener('click', () => {
-  openerPopup(avatarPopup)
+  profilePopupOpener(avatarPopup)
 }); // по клику открывается попап
 
 

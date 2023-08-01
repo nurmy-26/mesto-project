@@ -1,13 +1,12 @@
-import { userId } from '../index.js'
 export default class Card {
-  // liker, deleter, imageOpener - функции-колбеки, используют запросы (т.е. методы)  класса api (объявим в index.js)
-  constructor(object, selectorTemplate, liker, deleter, imageOpener){
-    // из object нам понадобятся: _id, name, link, likes, owner._id
+  // liker, deleter, imageOpener - функции-колбеки, используют запросы (т.е. методы) класса api
+  constructor(object, selectorTemplate, liker, deleter, imageOpener, userId){
     this._object = object;
     this._selectorTemplate = selectorTemplate;
     this._liker = liker;
     this._deleter = deleter;
     this._imageOpener = imageOpener;
+    this._userId = userId;
   }
 
   _getElement() {
@@ -26,16 +25,23 @@ export default class Card {
     return this._object._id;
   }
 
-  _isLiked() {
+  // likes - можно брать из ответа сервера
+  renewLikes(likes) {
+    this._object.likes = likes;
+    this._likeNumber.textContent = this._object.likes.length;
+    this._likeBtn.classList.toggle('js-active');
+  }
+
+  isLiked() {
     // если среди лайков есть мой (пользователя) - вернет true
-    return this._object.likes.some(item => item._id === userId)
+    return this._object.likes.some(item => item._id === this._userId)
   }
 
   _countLikes() {
     // меняет счетчик лайков в разметке и отвечает за покраску сердечка
     this._likeNumber.textContent = this._object.likes.length;
 
-    if (this._isLiked()) {
+    if (this.isLiked()) {
       this._likeBtn.classList.add('js-active');
     } else {
       this._likeBtn.classList.remove('js-active');
@@ -44,15 +50,15 @@ export default class Card {
 
   _removeDelBtn() {
     // если карточка не моя, убираем иконку удаления
-    if (this._object.owner._id !== userId) {
+    if (this._object.owner._id !== this._userId) {
       this._cardCopy.querySelector('.btn_el_delete').remove();
     }
   }
 
   _addFunctional() {
     // используем колбеки (будем передавать запросы Api)
-    this._likeBtn.addEventListener('click', (evt) => this._liker(this._object, evt, this._likeNumber));
-    this._deleteBtn.addEventListener('click', () => this._deleter(this._object, this._deleteBtn));
+    this._likeBtn.addEventListener('click', () => this._liker(this._object, this));
+    this._deleteBtn.addEventListener('click', () => this._deleter(this._object, this));
     this._imageEl.addEventListener('click', () => this._imageOpener(this._object));
   }
 
@@ -83,8 +89,9 @@ export default class Card {
   }
 
   delete() {
-    // удаляет карточку
-    this._cardCopy.remove();
+    // удаляет карточку из разметки
+    this._cardItem = this._deleteBtn.closest('.card');
+    this._cardItem.remove();
   }
 }
 
