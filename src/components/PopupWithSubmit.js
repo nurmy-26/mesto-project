@@ -1,23 +1,12 @@
 import Popup from './Popup'
 
-export default class PopupWithForm extends Popup {
+export default class PopupWithSubmit extends Popup {
   constructor(popupSelector, submitForm) {
     super(popupSelector); // селектор попапа
     this._submitForm = submitForm; // колбек-функция handleSubmit(makeRequest, evt)
 
     this._formElement = this._container.querySelector('.popup__form');
     this._buttonEl = this._formElement.querySelector('.btn_el_save');
-    this._inputList = Array.from(this._formElement.querySelectorAll('.popup__input'))// массив полей
-  }
-
-  // собирает данные всех полей формы
-  _getInputValues() {
-    const inputDataList = {}; // объект для сбора данных из полей
-    this._inputList.forEach((item) => {
-      inputDataList[item.name] = item.value // записываем данные полей в созданный объект (ключ - имя поля)
-    })
-
-    return inputDataList; // возвращаем заполненный объект
   }
 
   // перегрузка родительского метода - должен не только добавлять обработчик клика иконке закрытия, но и добавлять обработчик сабмита формы
@@ -29,9 +18,16 @@ export default class PopupWithForm extends Popup {
     });
   }
 
-  // перегрузка родительского метода - при закрытии попапа форма должна ещё и сбрасываться
-  closePopup() {
-    super.closePopup();
-    this._formElement.reset();
+  getCardInfo(cardObject, cardElement) {
+    this._cardObject = cardObject;
+    this._cardElement = cardElement;
+  }
+
+  getCardId() {
+    return this._cardObject._id
+  }
+
+  getCardElement() {
+    return this._cardElement
   }
 }

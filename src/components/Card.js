@@ -20,11 +20,6 @@ export default class Card {
     return cardElement;
   }
 
-  getId() { // мб пригодится если делать подтверждение удаления
-    // id карточки
-    return this._object._id;
-  }
-
   // likes - можно брать из ответа сервера
   renewLikes(likes) {
     this._object.likes = likes;
@@ -58,7 +53,6 @@ export default class Card {
   _addFunctional() {
     // используем колбеки (будем передавать запросы Api)
     this._likeBtn.addEventListener('click', () => this._liker(this._object, this));
-    // this._deleteBtn.addEventListener('click', () => this._deleter(this._object, this));
     this._deleteBtn.addEventListener('click', () => this._openDeletePopup(this._object, this));
     this._imageEl.addEventListener('click', () => this._imageOpener(this._object));
   }

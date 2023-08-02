@@ -1,14 +1,18 @@
 export default class Section {
-	constructor({renderer}, selectorContainer) {
+	constructor({renderer}, sectionElement) {
        this._renderer = renderer;
-       this._selectorContainer = selectorContainer;
+       this._sectionElement = sectionElement;
     }
-    renderItems(items) {
-        items.forEach((item) => {
-          this._renderer(item)
-        })
-    }
-    addItem(element) {
-        this._selectorContainer.prepend(element)
-    }
+
+  // отрисовать все элементы
+  renderItems(items) {
+      items.forEach((item) => {
+        this._renderer(item);
+      })
+  }
+
+  // вставить элемент в секцию (галерею)
+  addItem(element) {
+      this._sectionElement.prepend(element);
+  }
 }
