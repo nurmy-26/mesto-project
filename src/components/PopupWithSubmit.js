@@ -6,7 +6,6 @@ export default class PopupWithSubmit extends Popup {
     this._submitForm = submitForm; // колбек-функция handleSubmit(makeRequest, evt)
 
     this._formElement = this._container.querySelector('.popup__form');
-    this._buttonEl = this._formElement.querySelector('.btn_el_save');
   }
 
   // перегрузка родительского метода - должен не только добавлять обработчик клика иконке закрытия, но и добавлять обработчик сабмита формы
