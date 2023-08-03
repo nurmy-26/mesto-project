@@ -12,20 +12,18 @@ export default class PopupWithForm extends Popup {
 
   // собирает данные всех полей формы
   _getInputValues() {
-    const inputDataList = {}; // объект для сбора данных из полей
+    const formInfoList = {}; // объект для сбора данных из полей
     this._inputList.forEach((item) => {
-      inputDataList[item.name] = item.value // записываем данные полей в созданный объект (ключ - имя поля)
+      formInfoList[item.name] = item.value // записываем данные полей в созданный объект (ключ - имя поля)
     })
 
-    return inputDataList; // возвращаем заполненный объект
+    return formInfoList; // возвращаем заполненный объект
   }
 
   // перегрузка родительского метода - должен не только добавлять обработчик клика иконке закрытия, но и добавлять обработчик сабмита формы
   setEventListeners() {
-    super.setEventListeners();
-    // используем переданный колбек сабмита формы _submitForm
-    this._formElement.addEventListener('submit', (evt) => {
-      this._submitForm(evt);
+    this._formElement.addEventListener('submit', (evt, formInfo) => {
+      this._submitForm(evt, formInfo);
     });
   }
 

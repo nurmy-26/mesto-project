@@ -99,9 +99,10 @@ const openDeletePopup = (item, card) => {
 }
 
 //реквест обновления профиля
-function makeProfileRequest() {
-  const profileInfo = profilePopup._getInputValues();
-  return api.patchProfileInfo(profileInfo['profile-name'], profileInfo['profile-description']) // сохраняем введенные данные на сервере
+function makeProfileRequest(formInfo) {
+// доп обертка в функцию нужна, чтобы можно было передать аргумент в колбэк на 117 строке
+  return function() {
+    return api.patchProfileInfo(formInfo['profile-name'], formInfo['profile-description']) // сохраняем введенные данные на сервере
     .then((data) => { // в случае удачного запроса:
       userInfo.setUserInfo(data); // меняем имя и подпись на введенные
       profilePopup.closePopup(); // закрываем попап
@@ -109,16 +110,17 @@ function makeProfileRequest() {
     .catch((err) => {
       console.log(err);
     })
+  }
 }
 
 // колбэк-функция для формы редактирования профиля
-const submitProfile = (evt) => handleSubmit(makeProfileRequest, evt);
+const submitProfile = (evt, formInfo) => handleSubmit(makeProfileRequest(formInfo), evt);
 
 // РЕДАКТИРОВАНИЕ ПРОФИЛЯ
 // попап редактирования профиля
 const profilePopup = new PopupWithForm('.popup_type_profile-info', (evt) => {
-  // передаем колбэк-функцию
-  submitProfile(evt);
+  // передаем колбэк-функцию с аргументом (объект данных всех полей формы)
+  submitProfile(evt, profilePopup._getInputValues());
 });
 profilePopup.setEventListeners();
 
@@ -139,26 +141,27 @@ profileBtn.addEventListener('click', () => {
 
 
 // реквест добавления новой карточки
-function makeCardRequest() {
-  const cardInfo = cardPopup._getInputValues();
-  return api.postNewCard(cardInfo['card-name'], cardInfo['card-link']) // добавляем карточку к другим на сервере
-      .then((obj) => { // в случае удачного запроса:
-        cardsList.addItem(makeNewCard(obj)); // для использования с функцией
-        cardPopup.closePopup(); // закрываем попап
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+function makeCardRequest(formInfo) {
+  return function() {
+    return api.postNewCard(formInfo['card-name'], formInfo['card-link']) // добавляем карточку к другим на сервере
+        .then((obj) => { // в случае удачного запроса:
+          cardsList.addItem(makeNewCard(obj)); // для использования с функцией
+          cardPopup.closePopup(); // закрываем попап
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+  }
 }
 
 // колбэк-функция для формы редактирования профиля
-const submitNewCard = (evt) => handleSubmit(makeCardRequest, evt);
+const submitNewCard = (evt, formInfo) => handleSubmit(makeCardRequest(formInfo), evt);
 
 // ДОБАВЛЕНИЕ КАРТОЧКИ
 // попап добавления карточки
 const cardPopup = new PopupWithForm('.popup_type_new-card', (evt) => {
-  // передаем колбэк-функцию
-  submitNewCard(evt);
+  // передаем колбэк-функцию с аргументом (объект данных всех полей формы)
+  submitNewCard(evt, cardPopup._getInputValues());
   });
 cardPopup.setEventListeners();
 
@@ -169,25 +172,27 @@ newCardBtn.addEventListener('click', () => {
 
 
 // реквест смены аватара
-function makeAvatarRequest() {
-  return api.saveAvatar(avatarPopup._getInputValues()['avatar-link']) // отправляем обновленную информацию на сервер
-    .then((data) => { // в случае удачного запроса:
-      userInfo.setUserInfo(data); // меняем путь к картинке на новый с сервера
-      avatarPopup.closePopup(); // закрываем попап
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+function makeAvatarRequest(formInfo) {
+  return function() {
+    return api.saveAvatar(formInfo['avatar-link']) // отправляем обновленную информацию на сервер
+      .then((data) => { // в случае удачного запроса:
+        userInfo.setUserInfo(data); // меняем путь к картинке на новый с сервера
+        avatarPopup.closePopup(); // закрываем попап
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
 }
 
 // колбэк-функция для формы смены аватара
-const submitAvatar = (evt) => handleSubmit(makeAvatarRequest, evt);
+const submitAvatar = (evt, formInfo) => handleSubmit(makeAvatarRequest(formInfo), evt);
 
 // СМЕНА АВАТАРА
 // попап смены аватара
 const avatarPopup = new PopupWithForm('.popup_type_change-avatar', (evt) => {
-  // передаем колбэк-функцию
-  submitAvatar(evt);
+  // передаем колбэк-функцию с аргументом (объект данных всех полей формы)
+  submitAvatar(evt, avatarPopup._getInputValues());
   });
 avatarPopup.setEventListeners();
 
