@@ -95,7 +95,7 @@ const liker = (item, card) => {
 // ф-я, открывающая попап подтверждения удаления
 const openDeletePopup = (item, card) => {
   deletePopup.openPopup(); // открыть попап
-  deletePopup.getCardInfo(item, card);
+  deletePopup.setCardInfo(item, card);
 }
 
 //реквест обновления профиля

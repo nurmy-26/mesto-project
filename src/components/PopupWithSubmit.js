@@ -17,15 +17,18 @@ export default class PopupWithSubmit extends Popup {
     });
   }
 
-  getCardInfo(cardObject, cardElement) {
+  // записываем полученные данные карточки
+  setCardInfo(cardObject, cardElement) {
     this._cardObject = cardObject;
     this._cardElement = cardElement;
   }
 
+ // получить ID карточки
   getCardId() {
     return this._cardObject._id
   }
 
+ // получить елемент карточки
   getCardElement() {
     return this._cardElement
   }

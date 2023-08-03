@@ -22,6 +22,7 @@ export default class PopupWithForm extends Popup {
 
   // перегрузка родительского метода - должен не только добавлять обработчик клика иконке закрытия, но и добавлять обработчик сабмита формы
   setEventListeners() {
+    super.setEventListeners()
     this._formElement.addEventListener('submit', (evt, formInfo) => {
       this._submitForm(evt, formInfo);
     });
