@@ -5,6 +5,7 @@
   grid-template-areas:
     "name edit"
     "description description";
+  grid-template-columns: auto 50px;
   gap: 10px 18px;
 }
 

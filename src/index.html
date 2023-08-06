@@ -184,6 +184,25 @@
 
     </div>
 
+                                        <!-- ПОПАП подтверждения удаления -->
+    <div class="popup popup_type_submit-delete">                   <!-- popup_opened полупрозрачный оверлей -->
+
+      <div class="popup__container">        <!-- обертка для кнопки и формы -->
+        <button class="btn btn_el_close" type="button"></button>  <!-- закрыть окно -->
+
+        <!-- заголовок формы -->
+        <h2 class="popup__heading">Вы уверены?</h2>
+
+<!-- начало формы -->
+        <form class="popup__form popup__submit-delete-form" name="submit-delete-form" novalidate>
+
+    <!-- поле сохранения -->
+            <button class="btn btn_el_save" type="submit">Да</button>
+
+        </form>
+      </div>
+    </div>
+
                                         <!-- ШАБЛОН для добавления новых карточек -->
     <template id="card">
       <div class="card">
